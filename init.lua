@@ -150,6 +150,20 @@ lazy.setup({
 		-- Git features (like highlighting new/modified/deleted lines, git blame, ...)
 		'lewis6991/gitsigns.nvim'
 	},
+	-- LazyGit integration (GUI for Git)
+	{
+		'kdheepak/lazygit.nvim',
+		cmd = {
+			'LazyGit',
+			'LazyGitConfig',
+			'LazyGitCurrentFile',
+			'LazyGitFilter',
+			'LazyGitFilterCurrentFile',
+		},
+		dependencies = {
+			'nvim-lua/plenary.nvim'
+		}
+	},
 
 	-- # Additional Stuff
 	{
@@ -268,3 +282,19 @@ vim.keymap.set('n', '<leader><leader>', telescope.current_buffer_fuzzy_find, { d
 vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = 'Find current word' })
 vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = 'Find files' })
 
+-- Git
+local gitsigns = require('gitsigns')
+-- Staging/Resetting hunks
+vim.keymap.set('v', '<leader>gs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { desc = 'Stage selected range' })
+vim.keymap.set('v', '<leader>gu', function() gitsigns.undo_stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { desc = 'Unstage selected range' })
+vim.keymap.set('v', '<leader>gr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { desc = 'Revert selected range' })
+-- Staging/Resetting buffer
+vim.keymap.set({'n', 'v'}, '<leader>gS', gitsigns.stage_buffer, { desc = 'Stage all' })
+vim.keymap.set({'n', 'v'}, '<leader>gU', '<cmd>:Git restore --staged %<cr>', { desc = 'Unstage all' })
+vim.keymap.set({'n', 'v'}, '<leader>gR', gitsigns.reset_buffer, { desc = 'Revert all' })
+-- Committing/Pushing
+vim.keymap.set({'n', 'v'}, '<leader>gc', '<cmd>:Git commit -a<cr>', { desc = 'Commit staged changes' })
+vim.keymap.set({'n', 'v'}, '<leader>gp', '<cmd>:Git push<cr>', { desc = 'Push new commits' })
+vim.keymap.set({'n', 'v'}, '<leader>gpf', '<cmd>:Git push --force<cr>', { desc = 'Force push new commits' })
+-- LazyGit (e.g. used for interactive rebases)
+vim.keymap.set({'n', 'v'}, '<leader>gl', '<cmd>LazyGitCurrentFile<cr>', {desc = 'Open LazyGit' })
