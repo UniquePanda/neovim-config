@@ -1,3 +1,5 @@
+-- This config is obviously inspired by the famous kickstart.nvim config
+
 -- Set leader key first to make sure it doesn't collide with any plugins
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -14,6 +16,9 @@ vim.opt.breakindent = true -- keep indendation when wrapping long lines
 vim.opt.tabstop = 4 -- use 4 spaces for 1 tab
 vim.opt.shiftwidth = 4 -- use 4 spaces for automatically indented lines
 vim.opt.expandtab = false -- don't transform tabs to spaces
+
+vim.opt.autoindent = true
+vim.g.PHP_IndentFunctionDeclarationParameters = true
 
 vim.opt.ignorecase = true -- ignore case when searching
 
@@ -51,7 +56,7 @@ function lazy.install(path)
 		'--branch=stable',
 		path,
 	})
-	print('Installed lazy.vim')
+	print('Installed lazy.nvim')
 end
 
 function lazy.setup(plugins)
@@ -92,12 +97,33 @@ lazy.setup({
 		-- Parsing/Syntax Highlighting
 		'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdate',
-		config = function()
-			require('nvim-treesitter.configs').setup {
-				ensure_installed = { 'c', 'lua', 'vimdoc' }, -- Add all needed languages here
-				highlight = { enable = true }
-			}
-		end
+		opts = {
+			ensure_installed = {
+				-- Add all needed languages here
+				'bash',
+				'c',
+				'cpp',
+				'html',
+				'java',
+				'javascript',
+				'json',
+				'lua',
+				'luadoc',
+				'markdown',
+				'php',
+				'typescript',
+				'vim',
+				'vimdoc',
+				'vue',
+			},
+			auto_install = true,
+			highlight = { enable = true },
+			indent = { enable = true },
+		},
+		config = function(_, opts)
+			require('nvim-treesitter.install').prefer_git = true
+			require('nvim-treesitter.configs').setup(opts)
+		end,
 	},
 	{
 		-- LSP
@@ -112,11 +138,124 @@ lazy.setup({
 			{
 				'williamboman/mason-lspconfig.nvim'
 			},
+			-- Easier installation/updating of mason tools
 			{
-				-- Easier installation/updating of mason tools
 				'WhoIsSethDaniel/mason-tool-installer.nvim'
+			},
+			-- Status updates for LSP
+			{
+				'j-hui/fidget.nvim'
+			},
+			-- Neovim Config LUA LSP
+			{
+				'folke/neodev.nvim'
 			}
-		}
+		},
+		config = function()
+			-- Called everytime an LSP is attached to a file (everytime a file with a recognized extension is opened)
+			vim.api.nvim_create_autocmd('LspAttach', {
+				callback = function(event)
+					local keymap = function(keys, func, desc)
+						vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+					end
+
+					local telescope = require('telescope.builtin')
+					keymap('gd', telescope.lsp_definitions, '[G]oto [D]efinition')
+					keymap('gr', telescope.lsp_references, '[G]oto [R]eferences')
+					keymap('gm', telescope.lsp_implementations, '[G]oto I[m]plementation')
+					keymap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+					keymap('<leader><cr>', vim.lsp.buf.code_action, 'Code Action (suggestions etc.)')
+					keymap('K', vim.lsp.buf.hover, 'Show documentation (hover)')
+
+					-- Autocommands to highlight the word under the cursor (and clear highlight on cursor move)
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if (client and client.server_capabilities.documentHighlightProvider) then
+						local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
+						vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+							group = highlight_augroup,
+							buffer = event.buf,
+							callback = vim.lsp.buf.document_highlight,
+						})
+
+						vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+							group = highlight_augroup,
+							buffer = event.buf,
+							callback = vim.lsp.buf.clear_references,
+						})
+
+						vim.api.nvim_create_autocmd('LspDetach', {
+							callback = function (event2)
+								vim.lsp.buf.clear_references()
+								vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
+							end,
+						})
+					end
+
+					-- Display inlay hints by default and add toggle
+					if (client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint) then
+						vim.lsp.inlay_hint.enable(true)
+						keymap(
+							'<leader>th',
+							function()
+								vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+							end,
+							'[T]oggle Inlay [H]ints'
+						)
+					end
+				end,
+			})
+
+			-- Merge capabilities of plugins into the default neovim capabilities list
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+			-- Enabled language servers
+			local servers = {
+				bashls = {}, -- bash
+				clangd = {}, -- c++
+				html = {}, -- html
+				jdtls = {}, -- java
+				jsonls = {}, -- json
+				lua_ls = { -- lua
+					settings = {
+						Lua = {
+							completion = {
+								callSnippet = 'Replace',
+							},
+							diagnostics = {
+								globals = { 'vim' },
+							},
+						},
+					},
+				},
+				marksman = {}, -- markdown
+				phpactor = {}, -- php
+				tsserver = {},
+				volar = {}, -- vuejs
+			}
+
+			-- Setup mason to automatically install the servers and tools
+			require('mason').setup()
+
+			local ensure_installed = vim.tbl_keys(servers or {})
+			vim.list_extend(ensure_installed, {
+				-- additional tools that should be installed via mason
+				'stylua', -- format Lua code
+			})
+
+			require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
+
+			require('mason-lspconfig').setup({
+				handlers = {
+					function(server_name)
+						local server = servers[server_name] or {}
+						-- override default LSP config with values defined above
+						server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+						require('lspconfig')[server_name].setup(server)
+					end,
+				},
+			})
+		end,
 	},
 
 	-- # Fuzzy Finding
@@ -178,10 +317,80 @@ lazy.setup({
 	{
 		-- Comment lines easily
 		'numToStr/Comment.nvim'
-	}
+	},
+	{
+		-- Auto completion
+		'hrsh7th/nvim-cmp',
+		event = 'InsertEnter',
+		dependencies = {
+			{
+				'L3MON4D3/LuaSnip', -- Snippet engine for snippets in different programming languages
+				build = (function()
+					return 'make install_jsregexp'
+				end)(),
+			},
+			'saadparwaiz1/cmp_luasnip',
+			'hrsh7th/cmp-nvim-lsp',
+			'hrsh7th/cmp-path',
+		},
+		config = function()
+			local cmp = require 'cmp'
+			local luasnip = require 'luasnip'
+			luasnip.config.setup({})
+
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body)
+					end,
+				},
+				completion = { completeopt = 'menu,menuone,noinsert' },
+				mapping = cmp.mapping.preset.insert {
+					['<Tab>'] = cmp.mapping.select_next_item(),
+					['<S-Tab>'] = cmp.mapping.select_prev_item(),
+					['<CR>'] = cmp.mapping.confirm({ select = true }),
+
+					['<C-b>'] = cmp.mapping.scroll_docs(-4),
+					['<C-f>'] = cmp.mapping.scroll_docs(4),
+
+					['<C-Space>'] = cmp.mapping.complete({}),
+
+					-- Move to next snippet expansion location
+					['<C-l>'] = cmp.mapping(function()
+						if luasnip.expand_or_locally_jumpable() then
+							luasnip.expand_or_jump()
+						end
+					end, { 'i', 's' }),
+
+					-- Move to previous snippet expansion location
+					['<C-h>'] = cmp.mapping(function()
+						if luasnip.locally_jumpable(-1) then
+							luasnip.jump(-1)
+						end
+					end, { 'i', 's' }),
+				},
+				sources = {
+					{ name = 'nvim_lsp' },
+					{ name = 'luasnip' },
+					{ name = 'path' },
+				},
+			})
+		end,
+	},
+	-- Highlight todo comments
+	{
+		'folke/todo-comments.nvim',
+		event = 'VimEnter',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+		},
+		opts = {
+			signs = false,
+		}
+	},
 })
 
--- # PLUGIN Loading + CONFIG
+-- # PLUGIN LOADING + CONFIG
 require('telescope').setup {
 	extensions = {
 		fzf = {
@@ -206,9 +415,9 @@ require('gitsigns').setup {
 
 -- # THEMING
 local util = require("tokyonight.util")
-theming = {}
+Theming = {}
 
-function theming.initLualine()
+function Theming.initLualine()
 	require('lualine').setup({
 		options = {
 			theme = 'tokyonight'
@@ -216,7 +425,7 @@ function theming.initLualine()
 	})
 end
 
-function theming.initDark()
+function Theming.initDark()
 	require('tokyonight').setup({
 		style = 'moon',
 
@@ -230,13 +439,13 @@ function theming.initDark()
 	})
 	vim.cmd.colorscheme('tokyonight')
 
-	theming.initLualine()
+	Theming.initLualine()
 
 	local colors = require("tokyonight.colors").setup()
 	vim.cmd('highlight ColorColumn ctermbg=0 guibg=' .. util.darken(colors.comment, 0.3))
 end
 
-function theming.initLight()
+function Theming.initLight()
 	require('tokyonight').setup({
 		style = 'day',
 		day_brightness = 0.4,
@@ -251,18 +460,18 @@ function theming.initLight()
 	})
 	vim.cmd.colorscheme('tokyonight')
 
-	theming.initLualine()
+	Theming.initLualine()
 
 	local colors = require("tokyonight.colors").setup()
 	vim.cmd('highlight ColorColumn ctermbg=0 guibg=' .. util.lighten(colors.comment, 0.5))
 end
 
-theming.initDark()
+Theming.initDark()
 
 -- # KEYBINDS
 -- Change theme
-vim.keymap.set('n', '<leader>bgd', '<cmd>lua theming.initDark()<CR>') -- Leader+bgd to switch to dark mode
-vim.keymap.set('n', '<leader>bgl', '<cmd>lua theming.initLight()<CR>') -- Leader+bgl to switch to light mode
+vim.keymap.set('n', '<leader>bgd', '<cmd>lua Theming.initDark()<CR>') -- Leader+bgd to switch to dark mode
+vim.keymap.set('n', '<leader>bgl', '<cmd>lua Theming.initLight()<CR>') -- Leader+bgl to switch to light mode
 
 -- Editor movement
 vim.keymap.set('n', '<Tab>', '<C-W>w') -- Tab to move to next window
@@ -278,9 +487,11 @@ vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result 
 
 -- Telescope
 local telescope = require('telescope.builtin')
-vim.keymap.set('n', '<leader><leader>', telescope.current_buffer_fuzzy_find, { desc = 'Find in current file' })
-vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = 'Find current word' })
+vim.keymap.set('n', '<leader><leader>', telescope.current_buffer_fuzzy_find, { desc = 'Find string in current file' })
+vim.keymap.set('n', '<leader><leader><leader>', telescope.live_grep, { desc = 'Find string in current git repo' })
+vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = 'Find current word in current git repo' })
 vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc = 'Find files in current git repo' })
 
 -- Git
 local gitsigns = require('gitsigns')
