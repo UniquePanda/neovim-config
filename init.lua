@@ -348,7 +348,16 @@ lazy.setup({
 				mapping = cmp.mapping.preset.insert {
 					['<Tab>'] = cmp.mapping.select_next_item(),
 					['<S-Tab>'] = cmp.mapping.select_prev_item(),
-					['<CR>'] = cmp.mapping.confirm({ select = true }),
+					['<CR>'] = function(fallback)
+						if (not cmp.visible() or not cmp.get_selected_entry() or cmp.get_selected_entry().source.name == 'nvim_lsp_signature_help') then
+							fallback() -- normal enter (probably just adds a line break in current buffer)
+						else
+							cmp.confirm({ select = true })
+							if luasnip.expandable() then
+								luasnip.expand()
+							end
+						end
+					end,
 
 					['<C-b>'] = cmp.mapping.scroll_docs(-4),
 					['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -467,6 +476,19 @@ function Theming.initLight()
 end
 
 Theming.initDark()
+
+-- # SNIPPETS (via LuaSnip)
+local ls = require("luasnip")
+local snippet = ls.snippet
+local snippetInsertNode = ls.insert_node
+local snippetTextNode = ls.text_node
+
+-- C# Snippets
+ls.add_snippets('cs', {
+	snippet("log", {
+		snippetTextNode('Debug.Log('), snippetInsertNode(1), snippetTextNode(')')
+	}),
+})
 
 -- # KEYBINDS
 -- Change theme
