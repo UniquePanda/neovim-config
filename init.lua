@@ -397,6 +397,13 @@ lazy.setup({
 			signs = false,
 		}
 	},
+	-- Visual Clipboard History
+	{
+		'AckslD/nvim-neoclip.lua',
+		dependencies = {
+			{'nvim-telescope/telescope.nvim'}
+		}
+	},
 })
 
 -- # PLUGIN LOADING + CONFIG
@@ -404,11 +411,12 @@ require('telescope').setup {
 	extensions = {
 		fzf = {
 			case_mode = 'ignore_case'
-		}
+		},
 	}
 }
-require('telescope').load_extension('fzf');
-require('telescope').load_extension('ui-select');
+require('telescope').load_extension('fzf')
+require('telescope').load_extension('ui-select')
+require('telescope').load_extension('neoclip')
 
 require('which-key').setup()
 require('Comment').setup()
@@ -421,6 +429,19 @@ require('gitsigns').setup {
 		delete = { text = '-' }
 	}
 }
+
+require('neoclip').setup({
+	keys = {
+		telescope = {
+			i = {
+				paste_behind = '<CR>',
+			},
+			n = {
+				paste_behind = '<CR>',
+			},
+		},
+	},
+})
 
 -- # THEMING
 local util = require("tokyonight.util")
@@ -506,6 +527,7 @@ vim.keymap.set('n', '<C-k>', '<C-u>') -- Ctrl+k to move up half a page
 -- Editor misc
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
 vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result highlights' })
+vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
 
 -- Telescope
 local telescope = require('telescope.builtin')
