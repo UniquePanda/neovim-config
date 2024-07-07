@@ -404,6 +404,15 @@ lazy.setup({
 			{'nvim-telescope/telescope.nvim'}
 		}
 	},
+	-- Easier access and visualizations of notifications
+	{
+		'rcarriga/nvim-notify',
+	},
+	-- Reminds you of how to do things better in NeoVim :)
+	{
+		'm4xshen/hardtime.nvim',
+		dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
+	},
 })
 
 -- # PLUGIN LOADING + CONFIG
@@ -417,9 +426,7 @@ require('telescope').setup {
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('ui-select')
 require('telescope').load_extension('neoclip')
-
-require('which-key').setup()
-require('Comment').setup()
+require('telescope').load_extension('notify')
 
 require('gitsigns').setup {
 	current_line_blame = true,
@@ -442,6 +449,13 @@ require('neoclip').setup({
 		},
 	},
 })
+
+require('which-key').setup()
+require('Comment').setup()
+require('hardtime').setup()
+
+require('notify').setup()
+vim.notify = require("notify")
 
 -- # THEMING
 local util = require("tokyonight.util")
