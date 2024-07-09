@@ -128,6 +128,15 @@ lazy.setup({
 	{
 		-- LSP
 		'neovim/nvim-lspconfig',
+		opts = function()
+			return {
+				diagnostics = {
+					underline = true,
+					update_in_insert = false,
+					severity_sort = false,
+				}
+			}
+		end,
 		dependencies = {
 			-- Package manager for LSPs
 			{
@@ -166,6 +175,7 @@ lazy.setup({
 					keymap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 					keymap('<leader><cr>', vim.lsp.buf.code_action, 'Code Action (suggestions etc.)')
 					keymap('K', vim.lsp.buf.hover, 'Show documentation (hover)')
+					keymap('<leader>h', vim.diagnostic.open_float, 'Show diagnostics [h]int')
 
 					-- Autocommands to highlight the word under the cursor (and clear highlight on cursor move)
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
