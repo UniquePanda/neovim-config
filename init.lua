@@ -502,6 +502,8 @@ function Theming.initLualine()
 end
 
 function Theming.initDark()
+	vim.opt.background = 'dark'
+
 	require('tokyonight').setup({
 		style = 'moon',
 
@@ -522,6 +524,8 @@ function Theming.initDark()
 end
 
 function Theming.initLight()
+	vim.opt.background = 'light'
+
 	require('tokyonight').setup({
 		style = 'day',
 		day_brightness = 0.4,
