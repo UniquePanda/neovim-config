@@ -314,6 +314,12 @@ lazy.setup({
 		}
 	},
 
+	-- File Browser
+	{
+		'stevearc/oil.nvim',
+		dependencies = { "echasnovski/mini.icons" },
+	},
+
 	-- # Additional Stuff
 	{
 		-- Show list with available keybindings when beginning to type one
@@ -482,6 +488,13 @@ require('todo-comments').setup({
 	},
 })
 
+require("oil").setup({
+	view_options = {
+		show_hidden = true,
+		case_insensitive = true,
+	},
+})
+
 require('which-key').setup()
 require('Comment').setup()
 require('hardtime').setup()
@@ -573,11 +586,15 @@ vim.keymap.set('n', '<C-h>', 'b') -- Ctrl+h to move back a word
 vim.keymap.set('n', '<C-l>', 'w') -- Ctrl+l to move forward a word
 vim.keymap.set('n', '<C-j>', '<C-d>') -- Ctrl+j to move down half a page
 vim.keymap.set('n', '<C-k>', '<C-u>') -- Ctrl+k to move up half a page
+vim.keymap.set('n', '°', ':bnext<cr>') -- Shift+^ (°) to move to next buffer (file) 
 
 -- Editor misc
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
 vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result highlights' })
 vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
+
+-- Oil (File browser)
+vim.keymap.set('n', '<leader>o', '<cmd>Oil<cr>', { desc = 'Open Oil (file browser)' })
 
 -- Telescope
 local telescope = require('telescope.builtin')
