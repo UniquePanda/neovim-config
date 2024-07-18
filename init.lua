@@ -430,6 +430,27 @@ lazy.setup({
 
 -- # PLUGIN LOADING + CONFIG
 require('telescope').setup {
+	defaults = {
+		vimgrep_arguments = {
+			'rg',
+			'--follow',
+			'--hidden',
+			'--no-heading',
+			'--with-filename',
+			'--line-number',
+			'--column',
+			'--ignore-case',
+
+			'--glob=!**/.git/*',
+			'--glob=!**/.vscode/*',
+			'--glob=!**/package-lock.json',
+		},
+	},
+	pickers = {
+		find_files = {
+			hidden = true,
+		},
+	},
 	extensions = {
 		fzf = {
 			case_mode = 'ignore_case'
