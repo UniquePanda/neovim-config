@@ -39,6 +39,12 @@ vim.opt.timeoutlen = 600 -- reduce the time (ms) in which Vim waits for the next
 vim.opt.list = true
 vim.opt.listchars = { tab = '→ ', trail = '·', nbsp = '␣' }
 
+vim.filetype.add({
+	pattern = {
+		['.*%.blade%.php'] = 'blade',
+	},
+})
+
 -- install lazy.nvim (plugin manager)
 local lazy = {}
 
@@ -123,6 +129,14 @@ lazy.setup({
 		config = function(_, opts)
 			require('nvim-treesitter.install').prefer_git = true
 			require('nvim-treesitter.configs').setup(opts)
+			require('nvim-treesitter.parsers').get_parser_configs().blade = {
+				install_info = {
+					url = "https://github.com/EmranMR/tree-sitter-blade",
+					files = {"src/parser.c"},
+					branch = "main",
+				},
+				filetype = 'blade',
+			}
 		end,
 	},
 	{
