@@ -189,7 +189,9 @@ lazy.setup({
 					keymap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 					keymap('<leader><cr>', vim.lsp.buf.code_action, 'Code Action (suggestions etc.)')
 					keymap('K', vim.lsp.buf.hover, 'Show documentation (hover)')
-					keymap('<leader>h', vim.diagnostic.open_float, 'Show diagnostics [h]int')
+					keymap('<leader>dh', vim.diagnostic.open_float, 'Show diagnostics [h]int')
+					keymap('<leader>dk', '<cmd>LspStop<cr>', 'Kill (stop) LSP')
+					keymap('<leader>ds', '<cmd>LspStart<cr>', 'Start LSP')
 
 					-- Autocommands to highlight the word under the cursor (and clear highlight on cursor move)
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -219,11 +221,11 @@ lazy.setup({
 					if (client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint) then
 						vim.lsp.inlay_hint.enable(true)
 						keymap(
-							'<leader>th',
+							'<leader>di',
 							function()
 								vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 							end,
-							'[T]oggle Inlay [H]ints'
+							'Toggle [I]nlay Hints'
 						)
 					end
 				end,
@@ -633,7 +635,7 @@ vim.keymap.set('n', '<leader>bgl', '<cmd>lua Theming.initLight()<CR>') -- Leader
 vim.keymap.set('n', '<Tab>', '<C-W>w') -- Tab to move to next window
 vim.keymap.set('n', '<S-Tab>', '<C-W>W') -- Shif+Tab to move to previous window
 vim.keymap.set('n', '<C-h>', 'b') -- Ctrl+h to move back a word
-vim.keymap.set('n', '<C-l>', 'w') -- Ctrl+l to move forward a word
+vim.keymap.set('n', '<C-l>', 'e') -- Ctrl+l to move to end of word
 vim.keymap.set('n', '<C-j>', '<C-d>') -- Ctrl+j to move down half a page
 vim.keymap.set('n', '<C-k>', '<C-u>') -- Ctrl+k to move up half a page
 vim.keymap.set('n', '°', ':bnext<cr>') -- Shift+^ (°) to move to next buffer (file) 
