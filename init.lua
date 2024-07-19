@@ -416,6 +416,13 @@ lazy.setup({
 			})
 		end,
 	},
+	-- Session Manager
+	{
+		'rmagatti/auto-session',
+		dependencies = {
+			'nvim-telescope/telescope.nvim',
+		},
+	},
 	-- Highlight todo comments
 	{
 		'folke/todo-comments.nvim',
@@ -527,6 +534,14 @@ require("oil").setup({
 	view_options = {
 		show_hidden = true,
 		case_insensitive = true,
+	},
+})
+
+require('auto-session').setup({
+	cwd_change_handling = {
+		post_cwd_changed_hook = function()
+			require("lualine").refresh()
+		end,
 	},
 })
 
