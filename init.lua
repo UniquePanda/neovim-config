@@ -547,8 +547,14 @@ require('auto-session').setup({
 	},
 })
 
+require('Comment').setup({
+	mappings = {
+		basic = false,
+		extra = false,
+	},
+})
+
 require('which-key').setup()
-require('Comment').setup()
 require('hardtime').setup()
 
 require('notify').setup()
@@ -644,6 +650,18 @@ vim.keymap.set('n', '°', ':bnext<cr>') -- Shift+^ (°) to move to next buffer (
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
 vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result highlights' })
 vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
+
+-- Commenting ("Comment" plugin)
+vim.keymap.set(
+	'n',
+	'<leader>#',
+	function()
+		 return vim.v.count == 0
+			and '<Plug>(comment_toggle_linewise_current)'
+			or '<Plug>(comment_toggle_linewise_count)'
+	end,
+	{ expr = true, desc = '(Un)comment current line' }
+)
 
 -- Oil (File browser)
 vim.keymap.set('n', '<leader>o', '<cmd>Oil<cr>', { desc = 'Open Oil (file browser)' })
