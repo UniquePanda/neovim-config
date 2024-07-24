@@ -259,7 +259,7 @@ lazy.setup({
 					},
 				},
 				marksman = {}, -- markdown
-				phpactor = {}, -- php
+				intelephense = {}, -- php
 				tsserver = {},
 				volar = {}, -- vuejs
 			}
