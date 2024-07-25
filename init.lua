@@ -361,6 +361,10 @@ lazy.setup({
 		'numToStr/Comment.nvim'
 	},
 	{
+		-- Show context of current line (e.g. name of function you are currently in)
+		'nvim-treesitter/nvim-treesitter-context'
+	},
+	{
 		-- Auto completion
 		'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
@@ -565,6 +569,11 @@ require('Comment').setup({
 		basic = false,
 		extra = false,
 	},
+})
+
+require('treesitter-context').setup({
+	mode = 'topline',
+	separator = '⁕',
 })
 
 require('which-key').setup()
