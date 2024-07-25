@@ -379,6 +379,8 @@ lazy.setup({
 			local cmp = require 'cmp'
 			local luasnip = require 'luasnip'
 			luasnip.config.setup({})
+			-- Use Javascript snippets in Typescript files
+			luasnip.filetype_extend('typescript', { 'javascript' })
 
 			cmp.setup({
 				snippet = {
@@ -394,9 +396,10 @@ lazy.setup({
 						if (not cmp.visible() or not cmp.get_selected_entry() or cmp.get_selected_entry().source.name == 'nvim_lsp_signature_help') then
 							fallback() -- normal enter (probably just adds a line break in current buffer)
 						else
-							cmp.confirm({ select = true })
 							if luasnip.expandable() then
 								luasnip.expand()
+							else
+								cmp.confirm({ select = true })
 							end
 						end
 					end,
@@ -638,7 +641,22 @@ local snippetTextNode = ls.text_node
 -- C# Snippets
 ls.add_snippets('cs', {
 	snippet("log", {
-		snippetTextNode('Debug.Log('), snippetInsertNode(1), snippetTextNode(')')
+		snippetTextNode('Debug.Log('), snippetInsertNode(1), snippetTextNode(');')
+	}),
+})
+-- JS Snippets
+ls.add_snippets('javascript', {
+	snippet('log', {
+		snippetTextNode('console.log('), snippetInsertNode(1), snippetTextNode(');')
+	}),
+})
+-- PHP Snippets
+ls.add_snippets('php', {
+	snippet('log', {
+		snippetTextNode('\\Log::info('), snippetInsertNode(1), snippetTextNode(');')
+	}),
+	snippet('logj', {
+		snippetTextNode('\\Log::info(json_encode('), snippetInsertNode(1), snippetTextNode(', JSON_PRETTY_PRINT));')
 	}),
 })
 
