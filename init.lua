@@ -554,6 +554,9 @@ require("oil").setup({
 		show_hidden = true,
 		case_insensitive = true,
 	},
+	keymaps = {
+		['q'] = 'actions.close',
+	},
 })
 
 require('auto-session').setup({
@@ -701,7 +704,7 @@ vim.keymap.set(
 )
 
 -- Oil (File browser)
-vim.keymap.set('n', '<leader>o', '<cmd>Oil<cr>', { desc = 'Open Oil (file browser)' })
+vim.keymap.set('n', '<leader>o', '<cmd>Oil --float<cr>', { desc = 'Open Oil (file browser)' })
 
 -- Trello Integration
 vim.keymap.set('n', '<leader>t', '<cmd>VimTrello<cr>', { desc = 'Open Vim Trello' })
