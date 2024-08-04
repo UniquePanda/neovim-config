@@ -243,6 +243,7 @@ lazy.setup({
 			local servers = {
 				bashls = {}, -- bash
 				clangd = {}, -- c++
+				eslint = {}, -- linting for javascript/typescript
 				html = {}, -- html
 				jdtls = {}, -- java
 				jsonls = {}, -- json
