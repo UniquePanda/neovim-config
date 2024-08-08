@@ -245,6 +245,7 @@ lazy.setup({
 			local servers = {
 				bashls = {}, -- bash
 				clangd = {}, -- c++
+				cspell = {}, -- spell checking
 				eslint = {}, -- linting for javascript/typescript
 				html = {}, -- html
 				jdtls = {}, -- java
@@ -289,6 +290,10 @@ lazy.setup({
 				},
 			})
 		end,
+	},
+	{
+		-- Linter as extension to LSP
+		'mfussenegger/nvim-lint',
 	},
 
 	-- # Fuzzy Finding
@@ -504,6 +509,30 @@ require('telescope').load_extension('fzf')
 require('telescope').load_extension('ui-select')
 require('telescope').load_extension('neoclip')
 require('telescope').load_extension('notify')
+
+local lint = require('lint')
+lint.linters_by_ft = {
+	markdown = { 'markdownlint' },
+}
+lint.linters.cspell.stdin = true
+lint.linters.cspell.args = {
+	-- Default options
+	'lint',
+	'--no-color',
+	'--no-progress',
+	'--no-summary',
+	-- Show suggestions
+	'--show-suggestions',
+	-- Make sure that data is read from stdin to make autocommand trigger "InsertLeave" work
+	'stdin',
+}
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+	callback = function()
+		if (vim.bo.buftype == '') then
+			lint.try_lint('cspell')
+		end
+	end,
+})
 
 require('gitsigns').setup {
 	current_line_blame = true,
