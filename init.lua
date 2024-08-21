@@ -563,7 +563,7 @@ require('todo-comments').setup({
 			color = "error",
 			alt = { "FIXME", "BUG", "FIXIT", "ISSUE", 'fix', 'fixme', 'bug', 'fixit', 'issue' },
 		},
-		TODO = { icon = "", color = "info", alt = {'todo'} },
+		TODO = { icon = "", color = "info", alt = {'todo', 'Todo'} },
 		HACK = { icon = " ", color = "warning", alt = {'hack'} },
 		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX", 'warn', 'warning', 'xxx' } },
 		PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE", 'perf', 'optim', 'performance', 'optimize' } },
@@ -574,7 +574,7 @@ require('todo-comments').setup({
 		keyword = "bg",
 		before = "",
 		after = "bg",
-		pattern = [[.*<(KEYWORDS)\W]],
+		pattern = [[(--|\/\/|*|#) <(KEYWORDS)>]],
 	},
 	search = {
 		pattern = [[\b(KEYWORDS)\b]],
