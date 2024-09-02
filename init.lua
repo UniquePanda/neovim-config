@@ -612,7 +612,15 @@ require('treesitter-context').setup({
 })
 
 require('which-key').setup()
-require('hardtime').setup()
+require('hardtime').setup({
+	restriction_mode = 'hint',
+	restricted_keys = {
+		['j'] = {},
+		['k'] = {},
+		['h'] = {},
+		['l'] = {},
+	},
+})
 
 require('notify').setup()
 vim.notify = require("notify")
