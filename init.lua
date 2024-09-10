@@ -317,7 +317,10 @@ lazy.setup({
 			},
 			{
 				'nvim-tree/nvim-web-devicons' -- integrate some nice icons
-			}
+			},
+			{
+				'nvim-telescope/telescope-live-grep-args.nvim'
+			},
 		}
 	},
 	{
@@ -520,6 +523,7 @@ require('telescope').setup {
 	},
 }
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('live_grep_args')
 require('telescope').load_extension('ui-select')
 require('telescope').load_extension('neoclip')
 require('telescope').load_extension('notify')
@@ -766,7 +770,7 @@ vim.keymap.set('n', '<leader>t', '<cmd>VimTrello<cr>', { desc = 'Open Vim Trello
 -- Telescope
 local telescope = require('telescope.builtin')
 vim.keymap.set('n', '<leader><leader>', telescope.current_buffer_fuzzy_find, { desc = 'Find string in current file' })
-vim.keymap.set('n', '<leader><leader><leader>', telescope.live_grep, { desc = 'Find string in current git repo' })
+vim.keymap.set('n', '<leader><leader><leader>', require("telescope").extensions.live_grep_args.live_grep_args, { desc = 'Find string in current git repo' })
 vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = 'Find current word in current git repo' })
 vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = 'Find files' })
 vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc = 'Find files in current git repo' })
