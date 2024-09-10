@@ -264,7 +264,7 @@ lazy.setup({
 				},
 				marksman = {}, -- markdown
 				intelephense = {}, -- php
-				tsserver = {},
+				ts_ls = {},
 				volar = {}, -- vuejs
 			}
 
@@ -297,6 +297,14 @@ lazy.setup({
 	},
 
 	-- # Fuzzy Finding
+	{
+		-- Better UI for search results etc.
+		'folke/trouble.nvim',
+		opts = {
+			focus = true,
+		},
+		cmd = 'Trouble',
+	},
 	{
 		-- Fuzzy Finder
 		'nvim-telescope/telescope.nvim', branch = '0.1.x',
@@ -477,6 +485,8 @@ lazy.setup({
 })
 
 -- # PLUGIN LOADING + CONFIG
+local open_with_trouble = require("trouble.sources.telescope").open
+
 require('telescope').setup {
 	defaults = {
 		vimgrep_arguments = {
@@ -493,6 +503,10 @@ require('telescope').setup {
 			'--glob=!**/.vscode/*',
 			'--glob=!**/package-lock.json',
 		},
+		mappings = {
+			i = { ["<C-t>"] = open_with_trouble },
+			n = { ["<C-t>"] = open_with_trouble },
+		}
 	},
 	pickers = {
 		find_files = {
@@ -503,7 +517,7 @@ require('telescope').setup {
 		fzf = {
 			case_mode = 'ignore_case'
 		},
-	}
+	},
 }
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('ui-select')
@@ -547,10 +561,10 @@ require('neoclip').setup({
 	keys = {
 		telescope = {
 			i = {
-				paste_behind = '<CR>',
+				paste = '<CR>',
 			},
 			n = {
-				paste_behind = '<CR>',
+				paste = '<CR>',
 			},
 		},
 	},
