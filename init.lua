@@ -769,10 +769,9 @@ vim.keymap.set('n', '<leader>t', '<cmd>VimTrello<cr>', { desc = 'Open Vim Trello
 
 -- Telescope
 local telescope = require('telescope.builtin')
-vim.keymap.set('n', '<leader><leader>', telescope.current_buffer_fuzzy_find, { desc = 'Find string in current file' })
+vim.keymap.set('n', '<leader><leader>', telescope.find_files, { desc = 'Find files' })
 vim.keymap.set('n', '<leader><leader><leader>', require("telescope").extensions.live_grep_args.live_grep_args, { desc = 'Find string in current git repo' })
 vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = 'Find current word in current git repo' })
-vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = 'Find files' })
 vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc = 'Find files in current git repo' })
 
 -- Git
