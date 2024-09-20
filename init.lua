@@ -389,6 +389,10 @@ lazy.setup({
 		event = 'InsertEnter',
 		dependencies = {
 			{
+				-- Auto completion parameter name hints while typing function
+				'hrsh7th/cmp-nvim-lsp-signature-help',
+			},
+			{
 				'L3MON4D3/LuaSnip', -- Snippet engine for snippets in different programming languages
 				build = (function()
 					return 'make install_jsregexp'
@@ -416,14 +420,12 @@ lazy.setup({
 					['<Tab>'] = cmp.mapping.select_next_item(),
 					['<S-Tab>'] = cmp.mapping.select_prev_item(),
 					['<CR>'] = function(fallback)
-						if (not cmp.visible() or not cmp.get_selected_entry() or cmp.get_selected_entry().source.name == 'nvim_lsp_signature_help') then
+						if luasnip.expandable() then
+							luasnip.expand()
+						elseif (not cmp.visible() or not cmp.get_selected_entry() or cmp.get_selected_entry().source.name == 'nvim_lsp_signature_help') then
 							fallback() -- normal enter (probably just adds a line break in current buffer)
 						else
-							if luasnip.expandable() then
-								luasnip.expand()
-							else
-								cmp.confirm({ select = true })
-							end
+							cmp.confirm({ select = true })
 						end
 					end,
 
@@ -450,6 +452,7 @@ lazy.setup({
 					{ name = 'nvim_lsp' },
 					{ name = 'luasnip' },
 					{ name = 'path' },
+					{ name = 'nvim_lsp_signature_help' },
 				},
 			})
 		end,
