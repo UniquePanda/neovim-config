@@ -510,9 +510,20 @@ require('telescope').setup {
 			'--glob=!**/package-lock.json',
 		},
 		mappings = {
-			i = { ["<C-t>"] = open_with_trouble },
-			n = { ["<C-t>"] = open_with_trouble },
-		}
+			i = {
+				["<C-t>"] = open_with_trouble,
+				["<PageUp>"] = require("telescope.actions").preview_scrolling_up,
+				["<PageDown>"] = require("telescope.actions").preview_scrolling_down,
+			},
+			n = {
+				["<C-t>"] = open_with_trouble,
+				["<PageUp>"] = require("telescope.actions").preview_scrolling_up,
+				["<PageDown>"] = require("telescope.actions").preview_scrolling_down,
+			},
+		},
+		layout_config = {
+			scroll_speed = 1,
+		},
 	},
 	pickers = {
 		find_files = {
