@@ -412,6 +412,8 @@ lazy.setup({
 			luasnip.config.setup({})
 			-- Use Javascript snippets in Typescript files
 			luasnip.filetype_extend('typescript', { 'javascript' })
+			-- Use Javascript snippets in Vue files
+			luasnip.filetype_extend('vue', { 'javascript' })
 
 			cmp.setup({
 				snippet = {
