@@ -756,7 +756,8 @@ vim.keymap.set('n', '<C-h>', 'b') -- Ctrl+h to move back a word
 vim.keymap.set('n', '<C-l>', 'e') -- Ctrl+l to move to end of word
 vim.keymap.set('n', '<C-j>', '<C-d>') -- Ctrl+j to move down half a page
 vim.keymap.set('n', '<C-k>', '<C-u>') -- Ctrl+k to move up half a page
-vim.keymap.set('n', '°', ':bnext<cr>') -- Shift+^ (°) to move to next buffer (file) 
+vim.keymap.set('n', '^^', ':bnext<cr>') -- ^^ to move to next buffer (file) 
+vim.keymap.set('n', '°', ':bprev<cr>') -- Shift+^ (°) to move to previous buffer (file) 
 
 -- Editor misc
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
