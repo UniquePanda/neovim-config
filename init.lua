@@ -295,6 +295,10 @@ lazy.setup({
 		-- Linter as extension to LSP
 		'mfussenegger/nvim-lint',
 	},
+	{
+		-- Debug Adapter Protocol implementation (breakpoints etc.)
+		'mfussenegger/nvim-dap',
+	},
 
 	-- # Fuzzy Finding
 	{
@@ -542,6 +546,29 @@ require('telescope').load_extension('ui-select')
 require('telescope').load_extension('neoclip')
 require('telescope').load_extension('notify')
 
+local dap = require('dap')
+dap.adapters.cppdbg = {
+	id = 'cppdbg',
+	type = 'executable',
+	command = '/opt/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+}
+dap.configurations.cpp = {
+	{
+		name = "Launch file",
+		type = "cppdbg",
+		request = "launch",
+		program = function()
+			vim.fn.system("cmake --build ./build")
+			return vim.fn.input('Executable: ', '${workspaceFolder}/build/', 'file')
+		end,
+		args = function()
+			return vim.fn.split(vim.fn.input('Program arguments: '))
+		end,
+		cwd = '${workspaceFolder}/build',
+		stopAtEntry = false,
+	},
+}
+
 local lint = require('lint')
 lint.linters_by_ft = {
 	markdown = { 'markdownlint' },
@@ -746,8 +773,8 @@ ls.add_snippets('php', {
 
 -- # KEYBINDS
 -- Change theme
-vim.keymap.set('n', '<leader>bgd', '<cmd>lua Theming.initDark()<CR>') -- Leader+bgd to switch to dark mode
-vim.keymap.set('n', '<leader>bgl', '<cmd>lua Theming.initLight()<CR>') -- Leader+bgl to switch to light mode
+vim.keymap.set('n', '<leader>BGD', '<cmd>lua Theming.initDark()<CR>') -- Leader+bgd to switch to dark mode
+vim.keymap.set('n', '<leader>BGL', '<cmd>lua Theming.initLight()<CR>') -- Leader+bgl to switch to light mode
 
 -- Editor movement
 vim.keymap.set('n', '<Tab>', '<C-W>w') -- Tab to move to next window
@@ -763,6 +790,18 @@ vim.keymap.set('n', '°', ':bprev<cr>') -- Shift+^ (°) to move to previous buff
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
 vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result highlights' })
 vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
+
+-- Debugging (DAP)
+local dap_widgets = require('dap.ui.widgets')
+vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, {desc = 'Toggle breakpoint'})
+vim.keymap.set('n', '<F5>', dap.continue, {desc = 'Start/Continue execution (debugging)'})
+vim.keymap.set('n', '<leader><F5>', dap.run_last, {desc = 'Start execution of last debug session'})
+vim.keymap.set('n', '<F6>', dap.step_into, {desc = 'Step into function'})
+vim.keymap.set('n', '<F7>', dap.step_over, {desc = 'Step over function'})
+vim.keymap.set('n', '<F8>', dap_widgets.hover, {desc = 'Hover debug info'})
+vim.keymap.set('n', '<F9>', function() dap_widgets.centered_float(dap_widgets.frames) end, {desc = 'Show current stack frames'})
+vim.keymap.set('n', '<F10>', function() dap_widgets.centered_float(dap_widgets.scopes) end, {desc = 'Show variables in current scopes'})
+vim.keymap.set('n', '<F12>', dap.repl.open, {desc = 'Open debug REPL'})
 
 -- Commenting ("Comment" plugin)
 vim.keymap.set(
