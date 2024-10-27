@@ -455,8 +455,8 @@ lazy.setup({
 					end, { 'i', 's' }),
 				},
 				sources = {
-					{ name = 'nvim_lsp' },
 					{ name = 'luasnip' },
+					{ name = 'nvim_lsp' },
 					{ name = 'path' },
 					{ name = 'nvim_lsp_signature_help' },
 				},
@@ -755,6 +755,12 @@ local snippetTextNode = ls.text_node
 ls.add_snippets('cs', {
 	snippet("log", {
 		snippetTextNode('Debug.Log('), snippetInsertNode(1), snippetTextNode(');')
+	}),
+})
+-- C++ Snippets
+ls.add_snippets('cpp', {
+	snippet('log', {
+		snippetTextNode('std::cout << '), snippetInsertNode(1), snippetTextNode(' << std::endl;')
 	}),
 })
 -- JS Snippets
