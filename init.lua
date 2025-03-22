@@ -46,6 +46,8 @@ vim.opt.listchars = { tab = '→ ', trail = '·', nbsp = '␣' }
 vim.filetype.add({
 	pattern = {
 		['.*%.blade%.php'] = 'blade',
+		-- File type for my own programming language "blast"
+		['.*%.bla'] = 'bla',
 	},
 })
 
@@ -141,6 +143,8 @@ lazy.setup({
 				},
 				filetype = 'blade',
 			}
+			-- Temporary use JS highlighting for bla files as it is similar enough
+			vim.treesitter.language.register('javascript', 'bla')
 		end,
 	},
 	{
