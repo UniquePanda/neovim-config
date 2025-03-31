@@ -304,6 +304,28 @@ lazy.setup({
 		'mfussenegger/nvim-dap',
 	},
 
+	-- # Copilot
+	{
+		'zbirenbaum/copilot.lua',
+		cmd = 'Copilot',
+		build = ':Copilot auth',
+		event = 'InsertEnter',
+		config = function()
+			require('copilot').setup({
+				suggestion = {
+					auto_trigger = true,
+					keymap = {
+						accept = '<M-l>',
+						accept_line = '<M-S-l>',
+						dismiss = '<M-h>',
+						next = '<M-k>',
+						prev = '<M-j>',
+					},
+				},
+			})
+		end,
+	},
+
 	-- # Fuzzy Finding
 	{
 		-- Better UI for search results etc.
@@ -434,8 +456,8 @@ lazy.setup({
 						end
 					end,
 
-					['<C-b>'] = cmp.mapping.scroll_docs(-4),
-					['<C-f>'] = cmp.mapping.scroll_docs(4),
+					['<PageUp>'] = cmp.mapping.scroll_docs(-4),
+					['<PageDown>'] = cmp.mapping.scroll_docs(4),
 
 					['<C-Space>'] = cmp.mapping.complete({}),
 
