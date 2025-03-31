@@ -333,6 +333,9 @@ lazy.setup({
 			})
 		end,
 	},
+	{
+		'AndreM222/copilot-lualine',
+	},
 
 	-- # Fuzzy Finding
 	{
@@ -722,8 +725,32 @@ Theming = {}
 function Theming.initLualine()
 	require('lualine').setup({
 		options = {
-			theme = 'tokyonight'
-		}
+			theme = 'tokyonight',
+			component_separators = { left = '|', right = '|' },
+		},
+		sections = {
+			lualine_a = { 'mode' },
+			lualine_b = { 'branch' },
+			lualine_c = { 'filename', 'diagnostics' },
+			lualine_x = {
+				{
+					'copilot',
+					symbols = {
+						status = {
+							icons = {
+								enabled = " e",
+								sleep = " s",
+								disabled = "dd",
+								warning = " w",
+								unknown = " u"
+							},
+						},
+					},
+				},
+			},
+			lualine_y = { 'lsp_status' },
+			lualine_z = { 'progress', 'location' },
+		},
 	})
 end
 
