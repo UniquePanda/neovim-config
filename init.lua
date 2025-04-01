@@ -323,6 +323,13 @@ lazy.setup({
 					},
 				},
 				copilot_model = 'gpt-4o-copilot',
+				server_opts_override = {
+					settings = {
+						advanced = {
+							inlineSuggesCount = 5,
+						},
+					},
+				},
 			})
 		end,
 	},
