@@ -322,6 +322,7 @@ lazy.setup({
 						prev = '<M-j>',
 					},
 				},
+				copilot_model = 'gpt-4o-copilot',
 			})
 		end,
 	},
