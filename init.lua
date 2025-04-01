@@ -1,5 +1,3 @@
--- This config is obviously inspired by the famous kickstart.nvim config
-
 -- Set leader key first to make sure it doesn't collide with any plugins
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -335,6 +333,18 @@ lazy.setup({
 	},
 	{
 		'AndreM222/copilot-lualine',
+	},
+	{
+		'CopilotC-Nvim/CopilotChat.nvim',
+		dependencies = {
+			{ 'zbirenbaum/copilot.lua', },
+			{ 'nvim-lua/plenary.nvim', branch = 'master' },
+		},
+		opts = {
+			model = 'claude-3.5-sonnet',
+			auto_insert_mode = true,
+			question_header = '# You ',
+		},
 	},
 
 	-- # Fuzzy Finding
@@ -854,6 +864,9 @@ vim.keymap.set('n', '°', ':bprev<cr>') -- Shift+^ (°) to move to previous buff
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
 vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result highlights' })
 vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
+
+-- Copilot
+vim.keymap.set({'n', 'v'}, '<leader>cp', '<cmd>CopilotChatToggle<cr>', { desc = 'Toggle Copilot Chat' })
 
 -- Debugging (DAP)
 local dap_widgets = require('dap.ui.widgets')
