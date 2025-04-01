@@ -113,6 +113,8 @@ lazy.setup({
 				'bash',
 				'c',
 				'cpp',
+				'diff',
+				'gitcommit',
 				'html',
 				'java',
 				'javascript',
@@ -339,11 +341,24 @@ lazy.setup({
 		dependencies = {
 			{ 'zbirenbaum/copilot.lua', },
 			{ 'nvim-lua/plenary.nvim', branch = 'master' },
+			{ 'nvim-treesitter/nvim-treesitter' },
 		},
 		opts = {
 			model = 'claude-3.5-sonnet',
 			auto_insert_mode = true,
 			question_header = '# You ',
+			sticky = '#buffer',
+
+			mappings = {
+				show_diff = {
+					normal = 'gd',
+					full_diff = true,
+				},
+				reset = {
+					normal = '<C-q>',
+					insert = '<C-q>',
+				},
+			},
 		},
 	},
 
