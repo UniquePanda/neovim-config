@@ -912,8 +912,8 @@ vim.keymap.set(
 	{ expr = true, desc = '(Un)comment current line' }
 )
 
--- Oil (File browser)
-vim.keymap.set('n', '<leader>o', '<cmd>Oil --float<cr>', { desc = 'Open Oil (file browser)' })
+-- Oil (File browser) in floating window mode with preview open
+vim.keymap.set('n', '<leader>o', function () require('oil').open_float(nil, {preview = {}}) end, { desc = 'Open Oil (file browser)' })
 
 -- Trello Integration
 vim.keymap.set('n', '<leader>t', '<cmd>VimTrello<cr>', { desc = 'Open Vim Trello' })
