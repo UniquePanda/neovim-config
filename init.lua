@@ -706,6 +706,11 @@ require("oil").setup({
 	},
 	keymaps = {
 		['q'] = 'actions.close',
+		['<PageUp>'] = 'actions.preview_scroll_up',
+		['<PageDown>'] = 'actions.preview_scroll_down',
+	},
+	preview_win = {
+		preview_method = 'load',
 	},
 })
 
