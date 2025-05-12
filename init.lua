@@ -895,6 +895,7 @@ vim.keymap.set('n', '<C-k>', '<C-u>') -- Ctrl+k to move up half a page
 
 vim.keymap.set('n', '^^', '<Plug>(CybuNext)') -- ^^ to move to next buffer (file) 
 vim.keymap.set('n', '°', '<Plug>(CybuPrev)') -- Shift+^ (°) to move to previous buffer (file) 
+vim.keymap.set('n', '<leader>b', '<cmd>Telescope buffers<CR>')
 
 -- Editor misc
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
