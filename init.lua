@@ -324,7 +324,7 @@ lazy.setup({
 						prev = '<M-j>',
 					},
 				},
-				copilot_model = 'gpt-4o-copilot',
+				copilot_model = 'gpt-4.1',
 				server_opts_override = {
 					settings = {
 						advanced = {
@@ -346,7 +346,7 @@ lazy.setup({
 			{ 'nvim-treesitter/nvim-treesitter' },
 		},
 		opts = {
-			model = 'claude-3.5-sonnet',
+			model = 'claude-3.7-sonnet',
 			auto_insert_mode = true,
 			question_header = '# You ',
 			sticky = '#buffer',
