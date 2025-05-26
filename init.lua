@@ -657,13 +657,11 @@ lint.linters.cspell.args = {
 	-- Show suggestions
 	'--show-suggestions',
 	-- Make sure that data is read from stdin to make autocommand trigger "InsertLeave" work
-	'stdin',
+	function() return 'stdin://' .. vim.api.nvim_buf_get_name(0) end,
 }
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
 	callback = function()
-		if (vim.bo.buftype == '') then
-			lint.try_lint('cspell')
-		end
+		lint.try_lint('cspell')
 	end,
 })
 
