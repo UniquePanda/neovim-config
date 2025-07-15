@@ -587,11 +587,13 @@ require('telescope').setup {
 		mappings = {
 			i = {
 				["<C-t>"] = open_with_trouble,
+				["<C-d>"] = require('telescope.actions').delete_buffer,
 				["<PageUp>"] = require("telescope.actions").preview_scrolling_up,
 				["<PageDown>"] = require("telescope.actions").preview_scrolling_down,
 			},
 			n = {
 				["<C-t>"] = open_with_trouble,
+				["<C-d>"] = require('telescope.actions').delete_buffer,
 				["<PageUp>"] = require("telescope.actions").preview_scrolling_up,
 				["<PageDown>"] = require("telescope.actions").preview_scrolling_down,
 			},
