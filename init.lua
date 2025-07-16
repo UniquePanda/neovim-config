@@ -247,6 +247,10 @@ lazy.setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+			local util = require 'lspconfig.util'
+			local mason_packages = vim.fn.stdpath("data") .. '/mason/packages'
+			local volar_path = mason_packages .. '/vue-language-server/node_modules/@vue/language-server'
+
 			-- Enabled language servers
 			local servers = {
 				bashls = {}, -- bash
@@ -254,6 +258,7 @@ lazy.setup({
 				cspell = {}, -- spell checking
 				eslint = {}, -- linting for javascript/typescript
 				html = {}, -- html
+				intelephense = {}, -- php
 				jdtls = {}, -- java
 				jsonls = {}, -- json
 				lua_ls = { -- lua
@@ -269,9 +274,64 @@ lazy.setup({
 					},
 				},
 				marksman = {}, -- markdown
-				intelephense = {}, -- php
-				ts_ls = {},
-				volar = {}, -- vuejs
+				ts_ls = { -- typescript + some stuff for Vue support
+					init_options = {
+						plugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = volar_path,
+								languages = { "vue" },
+							},
+						},
+					},
+					settings = {
+						typescript = {
+							tsserver = {
+								useSyntaxServer = false,
+							},
+							inlayHints = {
+								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
+					},
+				},
+				volar = { -- vuejs
+					filetypes = { 'vue' },
+					init_options = {
+						vue = {
+							hybridMode = false,
+						},
+					},
+					settings = {
+						typescript = {
+							inlayHints = {
+								enumMemberValues = {
+									enabled = true,
+								},
+								functionLikeReturnTypes = {
+									enabled = true,
+								},
+								propertyDeclarationTypes = {
+									enabled = true,
+								},
+								parameterTypes = {
+									enabled = true,
+									suppressWhenArgumentMatchesName = true,
+								},
+								variableTypes = {
+									enabled = true,
+								},
+							},
+						},
+					},
+				},
 			}
 
 			-- Setup mason to automatically install the servers and tools
@@ -295,6 +355,27 @@ lazy.setup({
 					end,
 				},
 			})
+
+			vim.cmd [[
+				augroup RedscriptFile
+					autocmd!
+					autocmd BufNewFile,BufRead *.reds set filetype=reds | set syntax=swift
+				augroup END
+			]]
+			require('lspconfig.configs').redscript_ide = { -- Cyberpunk 2077 Redscript files
+				default_config = {
+					cmd = { '/usr/bin/redscript-ide' },
+					filetypes = { 'reds', 'script' },
+					init_options = {
+						game_dir = '/mnt/c/Program Files (x86)/GOG Galaxy/Games/Cyberpunk 2077',
+					},
+					root_dir = function(fname)
+						return util.root_pattern('.git')(fname) or util.path.dirname(fname)
+					end,
+					single_file_support = true,
+				},
+			}
+			require('lspconfig').redscript_ide.setup({})
 		end,
 	},
 	{
