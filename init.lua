@@ -409,7 +409,7 @@ lazy.setup({
 				server_opts_override = {
 					settings = {
 						advanced = {
-							inlineSuggesCount = 5,
+							inlineSuggestCount = 5,
 						},
 					},
 				},
@@ -892,7 +892,9 @@ function Theming.initDark()
 
 		on_highlights = function (highlights, colors)
 			highlights.Whitespace = { fg = util.lighten(colors.bg, 0.85) }
-		end
+			highlights.CopilotSuggestion = { fg = util.lighten(colors.purple, 0.4) }
+		end,
+
 	})
 	vim.cmd.colorscheme('tokyonight')
 
@@ -907,14 +909,16 @@ function Theming.initLight()
 
 	require('tokyonight').setup({
 		style = 'day',
-		day_brightness = 0.4,
+		day_brightness = 0.3,
 
 		on_colors = function(colors)
 			colors.fg_gutter = util.darken(colors.fg_dark, 0.5)
+			colors.bg = '#d6d1d0'
 		end,
 
 		on_highlights = function (highlights, colors)
-			highlights.Whitespace = { fg = util.lighten(colors.bg, 0.85) }
+			highlights.Whitespace = { fg = util.lighten(colors.bg, 0.65) }
+			highlights.CopilotSuggestion = { fg = util.lighten(colors.red, 0.4) }
 		end
 	})
 	vim.cmd.colorscheme('tokyonight')
@@ -922,7 +926,7 @@ function Theming.initLight()
 	Theming.initLualine()
 
 	local colors = require("tokyonight.colors").setup()
-	vim.cmd('highlight ColorColumn ctermbg=0 guibg=' .. util.lighten(colors.comment, 0.5))
+	vim.cmd('highlight ColorColumn ctermbg=0 guibg=' .. util.lighten(colors.comment, 0.9))
 end
 
 Theming.initDark()
