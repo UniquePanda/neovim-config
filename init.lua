@@ -292,11 +292,11 @@ lazy.setup({
 							inlayHints = {
 								includeInlayParameterNameHints = "all",
 								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-								includeInlayFunctionParameterTypeHints = true,
+								includeInlayFunctionParameterTypeHints = false,
 								includeInlayVariableTypeHints = true,
 								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
 								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayFunctionLikeReturnTypeHints = false,
 								includeInlayEnumMemberValueHints = true,
 							},
 						},
