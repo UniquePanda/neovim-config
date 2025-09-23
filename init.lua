@@ -451,6 +451,7 @@ lazy.setup({
 		'folke/trouble.nvim',
 		opts = {
 			focus = true,
+			max_items = 3000,
 		},
 		cmd = 'Trouble',
 	},
@@ -491,6 +492,11 @@ lazy.setup({
 	{
 		-- Git features (like highlighting new/modified/deleted lines, git blame, ...)
 		'lewis6991/gitsigns.nvim'
+	},
+	{
+		-- Additional git blame features
+		'FabijanZulj/blame.nvim',
+		lazy = false,
 	},
 	-- LazyGit integration (GUI for Git)
 	{
@@ -721,7 +727,9 @@ dap.configurations.cpp = {
 		args = function()
 			return vim.fn.split(vim.fn.input('Program arguments: '))
 		end,
-		cwd = '${workspaceFolder}/build',
+		cwd = function()
+			return vim.fn.input('Working directory: ', '${workspaceFolder}/build', 'file')
+		end,
 		stopAtEntry = false,
 	},
 }
@@ -756,6 +764,8 @@ require('gitsigns').setup {
 		delete = { text = '-' }
 	}
 }
+
+require('blame').setup {}
 
 require('neoclip').setup({
 	keys = {
@@ -1030,3 +1040,5 @@ vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc = 'Find files in c
 -- Git
 -- LazyGit (e.g. used for interactive rebases)
 vim.keymap.set({'n', 'v'}, '<leader>gl', '<cmd>LazyGitCurrentFile<cr>', {desc = 'Open LazyGit' })
+-- Git blame
+vim.keymap.set('n', '<leader>gb', '<cmd>BlameToggle<cr>', { desc = 'Toggle Git blame' })
