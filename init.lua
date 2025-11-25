@@ -427,7 +427,7 @@ lazy.setup({
 			{ 'nvim-treesitter/nvim-treesitter' },
 		},
 		opts = {
-			model = 'claude-3.7-sonnet',
+			model = 'gpt-4o',
 			auto_insert_mode = true,
 			question_header = '# You ',
 			sticky = '#buffer',
