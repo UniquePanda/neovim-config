@@ -163,13 +163,13 @@ lazy.setup({
 			-- Package manager for LSPs
 			{
 				'williamboman/mason.nvim',
-				version = '^1.0.0', -- Version 1 until problems with version 2 are fixed (see Github of Mason)
+				-- version = '^1.0.0', -- Version 1 until problems with version 2 are fixed (see Github of Mason)
 				config = true
 			},
 			-- Connect mason with lspconfig
 			{
 				'williamboman/mason-lspconfig.nvim',
-				version = '^1.0.0', -- Version 1 until problems with version 2 are fixed (see Github of Mason)
+				-- version = '^1.0.0', -- Version 1 until problems with version 2 are fixed (see Github of Mason)
 			},
 			-- Easier installation/updating of mason tools
 			{
@@ -255,7 +255,6 @@ lazy.setup({
 			local servers = {
 				bashls = {}, -- bash
 				clangd = {}, -- c++
-				cspell = {}, -- spell checking
 				eslint = {}, -- linting for javascript/typescript
 				html = {}, -- html
 				intelephense = {}, -- php
@@ -275,6 +274,7 @@ lazy.setup({
 				},
 				marksman = {}, -- markdown
 				ts_ls = { -- typescript + some stuff for Vue support
+					filetypes = { 'javascript', 'typescript', 'vue' },
 					init_options = {
 						plugins = {
 							{
@@ -290,71 +290,43 @@ lazy.setup({
 								useSyntaxServer = false,
 							},
 							inlayHints = {
-								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHints = 'all',
 								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-								includeInlayFunctionParameterTypeHints = false,
+								includeInlayFunctionParameterTypeHints = true,
 								includeInlayVariableTypeHints = true,
 								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
 								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayFunctionLikeReturnTypeHints = false,
+								includeInlayFunctionLikeReturnTypeHints = true,
 								includeInlayEnumMemberValueHints = true,
 							},
 						},
 					},
 				},
-				volar = { -- vuejs
-					filetypes = { 'vue' },
+				vue_ls = { -- vuejs
 					init_options = {
 						vue = {
-							hybridMode = false,
-						},
-					},
-					settings = {
-						typescript = {
-							inlayHints = {
-								enumMemberValues = {
-									enabled = true,
-								},
-								functionLikeReturnTypes = {
-									enabled = true,
-								},
-								propertyDeclarationTypes = {
-									enabled = true,
-								},
-								parameterTypes = {
-									enabled = true,
-									suppressWhenArgumentMatchesName = true,
-								},
-								variableTypes = {
-									enabled = true,
-								},
-							},
+							hybridMode = true,
 						},
 					},
 				},
+				stylua = {},
 			}
+
+			local ensure_installed_servers = vim.tbl_keys(servers or {})
 
 			-- Setup mason to automatically install the servers and tools
 			require('mason').setup()
-
-			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				-- additional tools that should be installed via mason
-				'stylua', -- format Lua code
-			})
-
-			require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
-
+			require('mason-tool-installer').setup({ ensure_installed = {'cspell', unpack(ensure_installed_servers) }})
 			require('mason-lspconfig').setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						-- override default LSP config with values defined above
-						server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-						require('lspconfig')[server_name].setup(server)
-					end,
-				},
+				ensure_installed = ensure_installed_servers,
+				automatic_installation = true,
 			})
+
+			for server_name, server in pairs(servers) do
+				server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+				vim.lsp.config(server_name, server)
+				vim.lsp.enable(server_name)
+			end
 
 			vim.cmd [[
 				augroup RedscriptFile
@@ -362,7 +334,7 @@ lazy.setup({
 					autocmd BufNewFile,BufRead *.reds set filetype=reds | set syntax=swift
 				augroup END
 			]]
-			require('lspconfig.configs').redscript_ide = { -- Cyberpunk 2077 Redscript files
+			vim.lsp.config('redscript_ide', { -- Cyberpunk 2077 Redscript files
 				default_config = {
 					cmd = { '/usr/bin/redscript-ide' },
 					filetypes = { 'reds', 'script' },
@@ -374,8 +346,8 @@ lazy.setup({
 					end,
 					single_file_support = true,
 				},
-			}
-			require('lspconfig').redscript_ide.setup({})
+			})
+			vim.lsp.enable('redscript_ide')
 		end,
 	},
 	{
