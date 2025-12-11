@@ -778,10 +778,16 @@ require('todo-comments').setup({
 })
 
 require("oil").setup({
+	default_file_explorer = true,
 	view_options = {
 		show_hidden = true,
 		case_insensitive = true,
 	},
+	columns = {
+		"mtime",
+		"icon",
+	},
+	constrain_cursor = "name",
 	keymaps = {
 		['q'] = 'actions.close',
 		['<PageUp>'] = 'actions.preview_scroll_up',
@@ -789,6 +795,10 @@ require("oil").setup({
 	},
 	preview_win = {
 		preview_method = 'load',
+	},
+	float = {
+		padding = 2,
+		border = 'rounded',
 	},
 })
 
