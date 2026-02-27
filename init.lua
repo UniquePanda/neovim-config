@@ -19,7 +19,8 @@ vim.opt.tabstop = 4 -- use 4 spaces for 1 tab
 vim.opt.shiftwidth = 4 -- use 4 spaces for automatically indented lines
 vim.opt.expandtab = false -- don't transform tabs to spaces
 
-vim.opt.autoindent = true
+-- vim.opt.autoindent = true
+vim.opt.indentexpr = "v:lua.LazyVim.treesitter.indentexpr()" -- use treesitter for indentation
 vim.g.PHP_IndentFunctionDeclarationParameters = true
 
 vim.opt.ignorecase = true -- ignore case when searching
@@ -231,7 +232,7 @@ lazy.setup({
 
 					-- Display inlay hints by default and add toggle
 					if (client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint) then
-						vim.lsp.inlay_hint.enable(true)
+						vim.lsp.inlay_hint.enable(false)
 						keymap(
 							'<leader>di',
 							function()
@@ -310,6 +311,7 @@ lazy.setup({
 					},
 				},
 				stylua = {},
+				tailwindcss = {},
 			}
 
 			local ensure_installed_servers = vim.tbl_keys(servers or {})
