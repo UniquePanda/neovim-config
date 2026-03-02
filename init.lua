@@ -128,6 +128,7 @@ lazy.setup({
 				'lua',
 				'luadoc',
 				'markdown',
+				'markdown_inline',
 				'php',
 				'typescript',
 				'vim',
