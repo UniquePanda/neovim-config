@@ -373,7 +373,7 @@ lazy.setup({
 					auto_trigger = true,
 					keymap = {
 						accept = '<M-l>',
-						accept_line = '<M-S-l>',
+						accept_word = '<M-S-l>',
 						dismiss = '<M-h>',
 						next = '<M-k>',
 						prev = '<M-j>',
