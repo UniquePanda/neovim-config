@@ -102,6 +102,11 @@ lazy.setup({
 			}
 		}
 	},
+	{
+		-- Better markdown rendering (e.g. for README.md files)
+		"MeanderingProgrammer/render-markdown.nvim",
+		ft = { "markdown", "codecompanion" }
+	},
 
 	-- # Parsing / LSP
 	{
