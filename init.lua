@@ -393,31 +393,6 @@ lazy.setup({
 	{
 		'AndreM222/copilot-lualine',
 	},
-	{
-		'CopilotC-Nvim/CopilotChat.nvim',
-		dependencies = {
-			{ 'zbirenbaum/copilot.lua', },
-			{ 'nvim-lua/plenary.nvim', branch = 'master' },
-			{ 'nvim-treesitter/nvim-treesitter' },
-		},
-		opts = {
-			model = 'gpt-4o',
-			auto_insert_mode = true,
-			question_header = '# You ',
-			sticky = '#buffer',
-
-			mappings = {
-				show_diff = {
-					normal = 'gd',
-					full_diff = true,
-				},
-				reset = {
-					normal = '<C-q>',
-					insert = '<C-q>',
-				},
-			},
-		},
-	},
 
 	-- # Fuzzy Finding
 	{
@@ -982,7 +957,6 @@ vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result 
 vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
 
 -- Copilot
-vim.keymap.set({'n', 'v'}, '<leader>cp', '<cmd>CopilotChatToggle<cr>', { desc = 'Toggle Copilot Chat' })
 
 -- Debugging (DAP)
 local dap_widgets = require('dap.ui.widgets')
