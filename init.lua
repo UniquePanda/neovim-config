@@ -379,7 +379,7 @@ lazy.setup({
 						prev = '<M-j>',
 					},
 				},
-				copilot_model = 'gpt-4.1',
+				copilot_model = 'gpt-41-copilot',
 				server_opts_override = {
 					settings = {
 						advanced = {
