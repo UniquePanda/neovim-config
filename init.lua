@@ -20,7 +20,7 @@ vim.opt.shiftwidth = 4 -- use 4 spaces for automatically indented lines
 vim.opt.expandtab = false -- don't transform tabs to spaces
 
 -- vim.opt.autoindent = true
-vim.opt.indentexpr = "v:lua.LazyVim.treesitter.indentexpr()" -- use treesitter for indentation
+vim.opt.indentexpr = 'v:lua.LazyVim.treesitter.indentexpr()' -- use treesitter for indentation
 vim.g.PHP_IndentFunctionDeclarationParameters = true
 
 vim.opt.ignorecase = true -- ignore case when searching
@@ -45,7 +45,7 @@ vim.opt.listchars = { tab = '→ ', trail = '·', nbsp = '␣' }
 vim.filetype.add({
 	pattern = {
 		['.*%.blade%.php'] = 'blade',
-		-- File type for my own programming language "blast"
+		-- File type for my own programming language 'blast'
 		['.*%.bla'] = 'bla',
 	},
 })
@@ -138,9 +138,9 @@ lazy.setup({
 			require('nvim-treesitter.configs').setup(opts)
 			require('nvim-treesitter.parsers').get_parser_configs().blade = {
 				install_info = {
-					url = "https://github.com/EmranMR/tree-sitter-blade",
-					files = {"src/parser.c"},
-					branch = "main",
+					url = 'https://github.com/EmranMR/tree-sitter-blade',
+					files = {'src/parser.c'},
+					branch = 'main',
 				},
 				filetype = 'blade',
 			}
@@ -249,7 +249,7 @@ lazy.setup({
 			capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
 			local util = require 'lspconfig.util'
-			local mason_packages = vim.fn.stdpath("data") .. '/mason/packages'
+			local mason_packages = vim.fn.stdpath('data') .. '/mason/packages'
 			local volar_path = mason_packages .. '/vue-language-server/node_modules/@vue/language-server'
 
 			-- Enabled language servers
@@ -280,9 +280,9 @@ lazy.setup({
 					init_options = {
 						plugins = {
 							{
-								name = "@vue/typescript-plugin",
+								name = '@vue/typescript-plugin',
 								location = volar_path,
-								languages = { "vue" },
+								languages = { 'vue' },
 							},
 						},
 					},
@@ -368,26 +368,26 @@ lazy.setup({
 		init = function()
 			vim.g.copilot_nes_debounce = 500
 			vim.lsp.enable('copilot_ls')
-			vim.keymap.set("n", "<leader>j", function()
+			vim.keymap.set('n', '<leader>j', function()
 				local bufnr = vim.api.nvim_get_current_buf()
 				local state = vim.b[bufnr].nes_state
 				if state then
 					-- Try to jump to the start of the suggestion edit.
 					-- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-					local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
+					local _ = require('copilot-lsp.nes').walk_cursor_start_edit()
 					or (
-						require("copilot-lsp.nes").apply_pending_nes()
-						and require("copilot-lsp.nes").walk_cursor_end_edit()
+						require('copilot-lsp.nes').apply_pending_nes()
+						and require('copilot-lsp.nes').walk_cursor_end_edit()
 					)
 					return nil
 				end
-			end, { desc = "Accept Copilot NES suggestion", expr = true })
+			end, { desc = 'Accept Copilot NES suggestion', expr = true })
 			-- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
-			vim.keymap.set("n", "<leader>k", function()
-				if not require("copilot-lsp.nes").clear() then
+			vim.keymap.set('n', '<leader>k', function()
+				if not require('copilot-lsp.nes').clear() then
 					-- fallback to other functionality
 				end
-			end, { desc = "Clear Copilot suggestion or fallback" })
+			end, { desc = 'Clear Copilot suggestion or fallback' })
 		end,
 	},
 	{
@@ -425,8 +425,8 @@ lazy.setup({
 		'olimorris/codecompanion.nvim',
 		opts = {},
 		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
+			'nvim-lua/plenary.nvim',
+			'nvim-treesitter/nvim-treesitter',
 		},
 	},
 	{
@@ -504,7 +504,7 @@ lazy.setup({
 	-- File Browser
 	{
 		'stevearc/oil.nvim',
-		dependencies = { "echasnovski/mini.icons" },
+		dependencies = { 'echasnovski/mini.icons' },
 	},
 
 	-- Trello integration
@@ -641,7 +641,7 @@ lazy.setup({
 })
 
 -- # PLUGIN LOADING + CONFIG
-local open_with_trouble = require("trouble.sources.telescope").open
+local open_with_trouble = require('trouble.sources.telescope').open
 
 require('telescope').setup {
 	defaults = {
@@ -661,16 +661,16 @@ require('telescope').setup {
 		},
 		mappings = {
 			i = {
-				["<C-t>"] = open_with_trouble,
-				["<C-d>"] = require('telescope.actions').delete_buffer,
-				["<PageUp>"] = require("telescope.actions").preview_scrolling_up,
-				["<PageDown>"] = require("telescope.actions").preview_scrolling_down,
+				['<C-t>'] = open_with_trouble,
+				['<C-d>'] = require('telescope.actions').delete_buffer,
+				['<PageUp>'] = require('telescope.actions').preview_scrolling_up,
+				['<PageDown>'] = require('telescope.actions').preview_scrolling_down,
 			},
 			n = {
-				["<C-t>"] = open_with_trouble,
-				["<C-d>"] = require('telescope.actions').delete_buffer,
-				["<PageUp>"] = require("telescope.actions").preview_scrolling_up,
-				["<PageDown>"] = require("telescope.actions").preview_scrolling_down,
+				['<C-t>'] = open_with_trouble,
+				['<C-d>'] = require('telescope.actions').delete_buffer,
+				['<PageUp>'] = require('telescope.actions').preview_scrolling_up,
+				['<PageDown>'] = require('telescope.actions').preview_scrolling_down,
 			},
 		},
 		layout_config = {
@@ -705,11 +705,11 @@ dap.adapters.cppdbg = {
 }
 dap.configurations.cpp = {
 	{
-		name = "Launch file",
-		type = "cppdbg",
-		request = "launch",
+		name = 'Launch file',
+		type = 'cppdbg',
+		request = 'launch',
 		program = function()
-			vim.fn.system("cmake --build ./build")
+			vim.fn.system('cmake --build ./build')
 			return vim.fn.input('Executable: ', '${workspaceFolder}/build/', 'file')
 		end,
 		args = function()
@@ -735,7 +735,7 @@ lint.linters.cspell.args = {
 	'--no-summary',
 	-- Show suggestions
 	'--show-suggestions',
-	-- Make sure that data is read from stdin to make autocommand trigger "InsertLeave" work
+	-- Make sure that data is read from stdin to make autocommand trigger 'InsertLeave' work
 	function() return 'stdin://' .. vim.api.nvim_buf_get_name(0) end,
 }
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
@@ -771,21 +771,21 @@ require('neoclip').setup({
 require('todo-comments').setup({
 	keywords = {
 		FIX = {
-			icon = " ",
-			color = "error",
-			alt = { "FIXME", "BUG", "FIXIT", "ISSUE", 'fix', 'fixme', 'bug', 'fixit', 'issue' },
+			icon = ' ',
+			color = 'error',
+			alt = { 'FIXME', 'BUG', 'FIXIT', 'ISSUE', 'fix', 'fixme', 'bug', 'fixit', 'issue' },
 		},
-		TODO = { icon = "", color = "info", alt = {'todo', 'Todo'} },
-		HACK = { icon = " ", color = "warning", alt = {'hack'} },
-		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX", 'warn', 'warning', 'xxx' } },
-		PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE", 'perf', 'optim', 'performance', 'optimize' } },
-		NOTE = { icon = " ", color = "hint", alt = { "INFO", 'note', 'info' } },
-		TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED", 'test', 'testing', 'passed', 'failed' } },
+		TODO = { icon = '', color = 'info', alt = {'todo', 'Todo'} },
+		HACK = { icon = ' ', color = 'warning', alt = {'hack'} },
+		WARN = { icon = ' ', color = 'warning', alt = { 'WARNING', 'XXX', 'warn', 'warning', 'xxx' } },
+		PERF = { icon = ' ', alt = { 'OPTIM', 'PERFORMANCE', 'OPTIMIZE', 'perf', 'optim', 'performance', 'optimize' } },
+		NOTE = { icon = ' ', color = 'hint', alt = { 'INFO', 'note', 'info' } },
+		TEST = { icon = '⏲ ', color = 'test', alt = { 'TESTING', 'PASSED', 'FAILED', 'test', 'testing', 'passed', 'failed' } },
 	},
 	highlight = {
-		keyword = "bg",
-		before = "",
-		after = "bg",
+		keyword = 'bg',
+		before = '',
+		after = 'bg',
 		pattern = [[(--|\/\/|*|#) <(KEYWORDS)>]],
 	},
 	search = {
@@ -793,17 +793,17 @@ require('todo-comments').setup({
 	},
 })
 
-require("oil").setup({
+require('oil').setup({
 	default_file_explorer = true,
 	view_options = {
 		show_hidden = true,
 		case_insensitive = true,
 	},
 	columns = {
-		"mtime",
-		"icon",
+		'mtime',
+		'icon',
 	},
-	constrain_cursor = "name",
+	constrain_cursor = 'name',
 	keymaps = {
 		['q'] = 'actions.close',
 		['<PageUp>'] = 'actions.preview_scroll_up',
@@ -821,7 +821,7 @@ require("oil").setup({
 require('auto-session').setup({
 	cwd_change_handling = {
 		post_cwd_changed_hook = function()
-			require("lualine").refresh()
+			require('lualine').refresh()
 		end,
 	},
 })
@@ -850,10 +850,10 @@ require('hardtime').setup({
 })
 
 require('notify').setup()
-vim.notify = require("notify")
+vim.notify = require('notify')
 
 -- # THEMING
-local util = require("tokyonight.util")
+local util = require('tokyonight.util')
 Theming = {}
 
 function Theming.initLualine()
@@ -872,11 +872,11 @@ function Theming.initLualine()
 					symbols = {
 						status = {
 							icons = {
-								enabled = " e",
-								sleep = " s",
-								disabled = "dd",
-								warning = " w",
-								unknown = " u"
+								enabled = ' e',
+								sleep = ' s',
+								disabled = 'dd',
+								warning = ' w',
+								unknown = ' u'
 							},
 						},
 					},
@@ -908,7 +908,7 @@ function Theming.initDark()
 
 	Theming.initLualine()
 
-	local colors = require("tokyonight.colors").setup()
+	local colors = require('tokyonight.colors').setup()
 	vim.cmd('highlight ColorColumn ctermbg=0 guibg=' .. util.darken(colors.comment, 0.3))
 end
 
@@ -933,21 +933,21 @@ function Theming.initLight()
 
 	Theming.initLualine()
 
-	local colors = require("tokyonight.colors").setup()
+	local colors = require('tokyonight.colors').setup()
 	vim.cmd('highlight ColorColumn ctermbg=0 guibg=' .. util.lighten(colors.comment, 0.9))
 end
 
 Theming.initDark()
 
 -- # SNIPPETS (via LuaSnip)
-local ls = require("luasnip")
+local ls = require('luasnip')
 local snippet = ls.snippet
 local snippetInsertNode = ls.insert_node
 local snippetTextNode = ls.text_node
 
 -- C# Snippets
 ls.add_snippets('cs', {
-	snippet("log", {
+	snippet('log', {
 		snippetTextNode('Debug.Log('), snippetInsertNode(1), snippetTextNode(');')
 	}),
 })
@@ -1010,7 +1010,7 @@ vim.keymap.set('n', '<F9>', function() dap_widgets.centered_float(dap_widgets.fr
 vim.keymap.set('n', '<F10>', function() dap_widgets.centered_float(dap_widgets.scopes) end, {desc = 'Show variables in current scopes'})
 vim.keymap.set('n', '<F12>', dap.repl.open, {desc = 'Open debug REPL'})
 
--- Commenting ("Comment" plugin)
+-- Commenting ('Comment' plugin)
 vim.keymap.set(
 	'n',
 	'<leader>#',
@@ -1031,7 +1031,7 @@ vim.keymap.set('n', '<leader>t', '<cmd>VimTrello<cr>', { desc = 'Open Vim Trello
 -- Telescope
 local telescope = require('telescope.builtin')
 vim.keymap.set('n', '<leader><leader>', telescope.find_files, { desc = 'Find files' })
-vim.keymap.set('n', '<leader><leader><leader>', require("telescope").extensions.live_grep_args.live_grep_args, { desc = 'Find string in current git repo' })
+vim.keymap.set('n', '<leader><leader><leader>', require('telescope').extensions.live_grep_args.live_grep_args, { desc = 'Find string in current git repo' })
 vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = 'Find current word in current git repo' })
 vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc = 'Find files in current git repo' })
 
