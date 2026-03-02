@@ -422,6 +422,14 @@ lazy.setup({
 		end,
 	},
 	{
+		'olimorris/codecompanion.nvim',
+		opts = {},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+	},
+	{
 		'AndreM222/copilot-lualine',
 	},
 
@@ -988,6 +996,7 @@ vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result 
 vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
 
 -- Copilot
+vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'Open Code Companion Chat' })
 
 -- Debugging (DAP)
 local dap_widgets = require('dap.ui.widgets')
