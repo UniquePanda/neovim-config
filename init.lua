@@ -434,6 +434,21 @@ lazy.setup({
 			'nvim-lua/plenary.nvim',
 			'nvim-treesitter/nvim-treesitter',
 		},
+		config = function()
+			require('codecompanion').setup({
+				interactions = {
+					chat = {
+						tools = {
+							['file_search'] = {
+								opts = {
+									max_results = 3000,
+								},
+							},
+						},
+					},
+				}
+			})
+		end,
 	},
 	{
 		'AndreM222/copilot-lualine',
