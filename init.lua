@@ -449,7 +449,14 @@ lazy.setup({
 							},
 						},
 					},
-				}
+				},
+				prompt_library = {
+					markdown = {
+						dirs = {
+							'~/.config/code-companion/prompts',
+						},
+					},
+				},
 			})
 		end,
 	},
