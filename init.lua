@@ -422,6 +422,7 @@ lazy.setup({
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			'nvim-treesitter/nvim-treesitter',
+			'ravitemer/codecompanion-history.nvim',
 		},
 		config = function()
 			require('codecompanion').setup({
@@ -440,6 +441,22 @@ lazy.setup({
 					markdown = {
 						dirs = {
 							'~/.config/code-companion/prompts',
+						},
+					},
+				},
+				extensions = {
+					history = {
+						enabled = true,
+						opts = {
+							chat_filter = function(chat_data)
+								return chat_data.cwd == vim.fn.getcwd()
+							end,
+							title_generation_opts = {
+								adapter = 'copilot',
+								model = 'gpt-4.1',
+								refresh_every_n_prompts = 2,
+								max_refreshes = 3,
+							},
 						},
 					},
 				},
