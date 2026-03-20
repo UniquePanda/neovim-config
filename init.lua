@@ -2,10 +2,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- # API KEYS/TOKENS
-vim.g.vimTrelloApiKey = os.getenv('TRELLO_API_KEY')
-vim.g.vimTrelloToken = os.getenv('TRELLO_TOKEN')
-
 -- # EDITOR OPTIONS
 vim.opt.number = true -- show line numbers
 vim.opt.relativenumber = true -- show relative line numbers
@@ -538,12 +534,6 @@ lazy.setup({
 		dependencies = { 'echasnovski/mini.icons' },
 	},
 
-	-- Trello integration
-	{
-		'yoshio15/vim-trello',
-		branch = 'main',
-	},
-
 	-- # Additional Stuff
 	{
 		-- Show list with available keybindings when beginning to type one
@@ -1055,9 +1045,6 @@ vim.keymap.set(
 
 -- Oil (File browser) in floating window mode with preview open
 vim.keymap.set('n', '<leader>o', function () require('oil').open_float(nil, {preview = {}}) end, { desc = 'Open Oil (file browser)' })
-
--- Trello Integration
-vim.keymap.set('n', '<leader>t', '<cmd>VimTrello<cr>', { desc = 'Open Vim Trello' })
 
 -- Telescope
 local telescope = require('telescope.builtin')
