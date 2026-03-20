@@ -367,6 +367,23 @@ lazy.setup({
 		'mfussenegger/nvim-dap',
 	},
 
+	-- Snacks (many handy utils in one plugin)
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		opts = {
+			bigfile = { enabled = true },
+			bufdelete = { enabled = true },
+			gh = { enabled = true },
+			indent = { enabled = true },
+			lazygit = { enabled = true },
+			notifier = { enabled = true },
+			picker = { enabled = true },
+			scratch = { enabled = true },
+		},
+	},
+
 	-- # Copilot
 	{
 		'zbirenbaum/copilot.lua',
@@ -475,20 +492,6 @@ lazy.setup({
 		-- Additional git blame features
 		'FabijanZulj/blame.nvim',
 		lazy = false,
-	},
-	-- LazyGit integration (GUI for Git)
-	{
-		'kdheepak/lazygit.nvim',
-		cmd = {
-			'LazyGit',
-			'LazyGitConfig',
-			'LazyGitCurrentFile',
-			'LazyGitFilter',
-			'LazyGitFilterCurrentFile',
-		},
-		dependencies = {
-			'nvim-lua/plenary.nvim'
-		}
 	},
 
 	-- File Browser
@@ -613,14 +616,14 @@ lazy.setup({
 			{'nvim-telescope/telescope.nvim'}
 		}
 	},
-	-- Easier access and visualizations of notifications
-	{
-		'rcarriga/nvim-notify',
-	},
 })
 
 -- # PLUGIN LOADING + CONFIG
 local open_with_trouble = require('trouble.sources.telescope').open
+local delete_buffer_and_reload = function()
+	Snacks.bufdelete.delete(require('telescope.actions.state').get_selected_entry().bufnr)
+	require('telescope.builtin').buffers()
+end
 
 require('telescope').setup {
 	defaults = {
@@ -641,13 +644,13 @@ require('telescope').setup {
 		mappings = {
 			i = {
 				['<C-t>'] = open_with_trouble,
-				['<C-d>'] = require('telescope.actions').delete_buffer,
+				['<C-d>'] = delete_buffer_and_reload,
 				['<PageUp>'] = require('telescope.actions').preview_scrolling_up,
 				['<PageDown>'] = require('telescope.actions').preview_scrolling_down,
 			},
 			n = {
 				['<C-t>'] = open_with_trouble,
-				['<C-d>'] = require('telescope.actions').delete_buffer,
+				['<C-d>'] = delete_buffer_and_reload,
 				['<PageUp>'] = require('telescope.actions').preview_scrolling_up,
 				['<PageDown>'] = require('telescope.actions').preview_scrolling_down,
 			},
@@ -671,7 +674,6 @@ require('telescope').load_extension('fzf')
 require('telescope').load_extension('live_grep_args')
 require('telescope').load_extension('ui-select')
 require('telescope').load_extension('neoclip')
-require('telescope').load_extension('notify')
 
 local dap = require('dap')
 dap.adapters.cppdbg = {
@@ -816,9 +818,6 @@ require('treesitter-context').setup({
 
 require('which-key').setup()
 
-require('notify').setup()
-vim.notify = require('notify')
-
 -- # THEMING
 local util = require('tokyonight.util')
 Theming = {}
@@ -959,6 +958,7 @@ vim.keymap.set('n', '<leader>b', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', '<Esc>', 'i') -- Esc enters insert mode before current character
 vim.keymap.set('n', '<leader>n', '<cmd>noh<cr>', { desc = 'Remove search result highlights' })
 vim.keymap.set({'n', 'i'}, '<A-p>', '<cmd>Telescope neoclip<CR>') -- Alt+P to open clipboard history
+vim.keymap.set('n', '<leader>nh', Snacks.notifier.show_history, { desc = 'Show notification history' })
 
 -- Copilot
 vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'Open Code Companion Chat' })
@@ -999,6 +999,11 @@ vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc = 'Find files in c
 
 -- Git
 -- LazyGit (e.g. used for interactive rebases)
-vim.keymap.set({'n', 'v'}, '<leader>gl', '<cmd>LazyGitCurrentFile<cr>', {desc = 'Open LazyGit' })
+vim.keymap.set({'n', 'v'}, '<leader>gl', Snacks.lazygit.open, {desc = 'Open LazyGit' })
 -- Git blame
 vim.keymap.set('n', '<leader>gb', '<cmd>BlameToggle<cr>', { desc = 'Toggle Git blame' })
+-- Git issues and PRs
+vim.keymap.set('n', '<leader>gi', Snacks.picker.gh_issue, { desc = 'GitHub Issues' })
+vim.keymap.set('n', '<leader>gI', function() Snacks.picker.gh_issue({ state = 'all' }) end, { desc = 'GitHub Issues (including closed)' })
+vim.keymap.set('n', '<leader>gp', Snacks.picker.gh_pr, { desc = 'GitHub Pull Requests' })
+vim.keymap.set('n', '<leader>gP', function() Snacks.picker.gh_pr({ state = 'all' }) end, { desc = 'GitHub Pull Requests (including closed)' })
