@@ -10,7 +10,6 @@
   "codecompanion.nvim": { "branch": "main", "commit": "cc0d298b6b7bdbdcfe48f7e70deb0e6215fe4d32" },
   "copilot-lualine": { "branch": "main", "commit": "222e90bd8dcdf16ca1efc4e784416afb5f011c31" },
   "copilot.lua": { "branch": "master", "commit": "0552b44fceedf0c4cba2cd4953d3976633b2509a" },
-  "cybu.nvim": { "branch": "main", "commit": "2b970234efb91e4e005d7e53985694139c361075" },
   "fidget.nvim": { "branch": "main", "commit": "7fa433a83118a70fe24c1ce88d5f0bd3453c0970" },
   "gitsigns.nvim": { "branch": "main", "commit": "7c4faa3540d0781a28588cafbd4dd187a28ac6e3" },
   "hardtime.nvim": { "branch": "main", "commit": "b4e431934af1fe224a3a801f632c008278cb7628" },

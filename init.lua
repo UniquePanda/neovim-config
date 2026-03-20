@@ -467,16 +467,6 @@ lazy.setup({
 		build = 'make'
 	},
 
-	-- # Navigation (e.g. between buffers)
-	{
-		'ghillb/cybu.nvim',
-		branch = 'main',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'nvim-tree/nvim-web-devicons',
-		},
-	},
-
 	{
 		-- Git features (like highlighting new/modified/deleted lines, git blame, ...)
 		'lewis6991/gitsigns.nvim'
@@ -687,9 +677,6 @@ require('telescope').load_extension('live_grep_args')
 require('telescope').load_extension('ui-select')
 require('telescope').load_extension('neoclip')
 require('telescope').load_extension('notify')
-
-local cybu = require('cybu')
-cybu.setup()
 
 local dap = require('dap')
 dap.adapters.cppdbg = {
@@ -980,8 +967,6 @@ vim.keymap.set('n', '<C-l>', 'e') -- Ctrl+l to move to end of word
 vim.keymap.set('n', '<C-j>', '<C-d>') -- Ctrl+j to move down half a page
 vim.keymap.set('n', '<C-k>', '<C-u>') -- Ctrl+k to move up half a page
 
-vim.keymap.set('n', '^^', '<Plug>(CybuNext)') -- ^^ to move to next buffer (file) 
-vim.keymap.set('n', '°', '<Plug>(CybuPrev)') -- Shift+^ (°) to move to previous buffer (file) 
 vim.keymap.set('n', '<leader>b', '<cmd>Telescope buffers<CR>')
 
 -- Editor misc
