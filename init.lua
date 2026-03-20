@@ -617,11 +617,6 @@ lazy.setup({
 	{
 		'rcarriga/nvim-notify',
 	},
-	-- Reminds you of how to do things better in NeoVim :)
-	{
-		'm4xshen/hardtime.nvim',
-		dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-	},
 })
 
 -- # PLUGIN LOADING + CONFIG
@@ -820,15 +815,6 @@ require('treesitter-context').setup({
 })
 
 require('which-key').setup()
-require('hardtime').setup({
-	restriction_mode = 'hint',
-	restricted_keys = {
-		['j'] = {},
-		['k'] = {},
-		['h'] = {},
-		['l'] = {},
-	},
-})
 
 require('notify').setup()
 vim.notify = require('notify')
