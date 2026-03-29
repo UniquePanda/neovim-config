@@ -425,6 +425,8 @@ lazy.setup({
 			'ravitemer/codecompanion-history.nvim',
 		},
 		config = function()
+			local config_dir = vim.fn.stdpath('config')
+
 			require('codecompanion').setup({
 				interactions = {
 					chat = {
@@ -440,7 +442,7 @@ lazy.setup({
 				prompt_library = {
 					markdown = {
 						dirs = {
-							'~/.config/code-companion/prompts',
+							config_dir .. '/code-companion/prompts/',
 						},
 					},
 				},
