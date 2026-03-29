@@ -430,6 +430,15 @@ lazy.setup({
 			require('codecompanion').setup({
 				interactions = {
 					chat = {
+						editor_context = {
+							['diff_to_develop'] = {
+								path = 'code-companion.editor_context.diff_to_develop',
+								description = 'Add the current git diff (compared to origin/develop) to the chat.',
+								opts = {
+									contains_code = true,
+								},
+							},
+						},
 						tools = {
 							['file_search'] = {
 								opts = {
