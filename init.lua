@@ -479,6 +479,11 @@ lazy.setup({
 								refresh_every_n_prompts = 2,
 								max_refreshes = 3,
 							},
+							keymap = "<leader>chb",
+							summary = {
+								create_summary_keymap = "<leader>csc",
+								browse_summaries_keymap = "<leader>csb",
+							},
 						},
 					},
 				},
