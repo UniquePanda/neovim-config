@@ -428,6 +428,17 @@ lazy.setup({
 			local config_dir = vim.fn.stdpath('config')
 
 			require('codecompanion').setup({
+				adapters = {
+					http = {
+						tavily = function()
+							return require('codecompanion.adapters').extend('tavily', {
+								env = {
+									api_key = 'cmd:echo -n "$(cat ~/.apis/tavily.md)"',
+								},
+							})
+						end,
+					},
+				},
 				interactions = {
 					chat = {
 						editor_context = {
