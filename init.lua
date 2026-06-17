@@ -684,7 +684,6 @@ require('telescope').setup {
 			'--with-filename',
 			'--line-number',
 			'--column',
-			'--ignore-case',
 
 			'--glob=!**/.git/*',
 			'--glob=!**/.vscode/*',
