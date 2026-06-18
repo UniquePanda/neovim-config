@@ -315,6 +315,7 @@ lazy.setup({
 						},
 					},
 				},
+				roslyn_ls = {},
 				stylua = {},
 				tailwindcss = {},
 			}
