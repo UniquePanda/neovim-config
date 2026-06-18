@@ -260,7 +260,6 @@ lazy.setup({
 					filetypes = {'yml', 'yaml', 'ansible'},
 				},
 				bashls = {}, -- bash
-				-- copilot = {}, -- copilot
 				clangd = {}, -- c++
 				eslint = {}, -- linting for javascript/typescript
 				html = {}, -- html
@@ -405,7 +404,6 @@ lazy.setup({
 				nes = {
 					enabled = false,
 				},
-				copilot_model = 'gpt-41-copilot',
 				server_opts_override = {
 					settings = {
 						advanced = {
@@ -441,6 +439,10 @@ lazy.setup({
 				},
 				interactions = {
 					chat = {
+						adapter = {
+							name = 'copilot',
+							model = 'claude-opus-4.8',
+						},
 						editor_context = {
 							['diff_to_develop'] = {
 								path = 'code-companion.editor_context.diff_to_develop',
@@ -480,7 +482,7 @@ lazy.setup({
 							end,
 							title_generation_opts = {
 								adapter = 'copilot',
-								model = 'gpt-4.1',
+								model = 'gpt-5.4',
 								refresh_every_n_prompts = 2,
 								max_refreshes = 3,
 							},
