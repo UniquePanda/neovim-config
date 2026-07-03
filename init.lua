@@ -1052,11 +1052,14 @@ vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc = 'Find files in c
 
 -- Git
 -- LazyGit (e.g. used for interactive rebases)
-vim.keymap.set({'n', 'v'}, '<leader>gl', Snacks.lazygit.open, {desc = 'Open LazyGit' })
--- Git blame
-vim.keymap.set('n', '<leader>gb', '<cmd>BlameToggle<cr>', { desc = 'Toggle Git blame' })
+vim.keymap.set({'n', 'v'}, 'gl', Snacks.lazygit.open, {desc = 'Open LazyGit' })
 -- Git issues and PRs
 vim.keymap.set('n', '<leader>gi', Snacks.picker.gh_issue, { desc = 'GitHub Issues' })
 vim.keymap.set('n', '<leader>gI', function() Snacks.picker.gh_issue({ state = 'all' }) end, { desc = 'GitHub Issues (including closed)' })
 vim.keymap.set('n', '<leader>gp', Snacks.picker.gh_pr, { desc = 'GitHub Pull Requests' })
 vim.keymap.set('n', '<leader>gP', function() Snacks.picker.gh_pr({ state = 'all' }) end, { desc = 'GitHub Pull Requests (including closed)' })
+-- Git blame
+vim.keymap.set('n', 'gb', '<cmd>Gitsigns blame<cr>', { desc = 'Toggle Git blame' })
+-- Hunk navigation
+vim.keymap.set('n', 'gn', '<cmd>Gitsigns nav_hunk next<cr>', { desc = 'Go to next Git hunk' })
+vim.keymap.set('n', 'gN', '<cmd>Gitsigns nav_hunk prev<cr>', { desc = 'Go to previous Git hunk' })
