@@ -279,6 +279,7 @@ lazy.setup({
 					},
 				},
 				marksman = {}, -- markdown
+				oxlint = {}, -- linting for javascript/typescript
 				ts_ls = { -- typescript + some stuff for Vue support
 					filetypes = { 'javascript', 'typescript', 'vue' },
 					init_options = {
