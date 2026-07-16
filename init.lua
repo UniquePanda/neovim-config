@@ -264,7 +264,6 @@ lazy.setup({
 				eslint = {}, -- linting for javascript/typescript
 				html = {}, -- html
 				intelephense = {}, -- php
-				jdtls = {}, -- java
 				jsonls = {}, -- json
 				lua_ls = { -- lua
 					settings = {
@@ -325,7 +324,7 @@ lazy.setup({
 
 			-- Setup mason to automatically install the servers and tools
 			require('mason').setup()
-			require('mason-tool-installer').setup({ ensure_installed = {'cspell', unpack(ensure_installed_servers) }})
+			require('mason-tool-installer').setup({ ensure_installed = {'cspell', 'jdtls', unpack(ensure_installed_servers) }})
 			require('mason-lspconfig').setup({
 				ensure_installed = ensure_installed_servers,
 				automatic_installation = true,
@@ -366,6 +365,11 @@ lazy.setup({
 	{
 		-- Debug Adapter Protocol implementation (breakpoints etc.)
 		'mfussenegger/nvim-dap',
+	},
+	{
+		-- Java LSP (jdtls) integration (setup happens in ftplugin/java.lua)
+		'mfussenegger/nvim-jdtls',
+		ft = 'java',
 	},
 
 	-- Snacks (many handy utils in one plugin)
