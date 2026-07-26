@@ -315,7 +315,7 @@ lazy.setup({
 						},
 					},
 				},
-				roslyn_ls = {},
+				-- roslyn_ls = {},
 				stylua = {},
 				tailwindcss = {},
 			}
@@ -447,7 +447,7 @@ lazy.setup({
 					chat = {
 						adapter = {
 							name = 'copilot',
-							model = 'claude-opus-4.8',
+							model = 'claude-opus-5',
 						},
 						editor_context = {
 							['diff_to_develop'] = {
