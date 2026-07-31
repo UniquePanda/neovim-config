@@ -506,6 +506,19 @@ lazy.setup({
 	{
 		'AndreM222/copilot-lualine',
 	},
+	-- Used to add images to LLM context in CodeCompanion.
+	{
+		"HakonHarnes/img-clip.nvim",
+		opts = {
+			filetypes = {
+				codecompanion = {
+					prompt_for_file_name = false,
+					template = "[Image]($FILE_PATH)",
+					use_absolute_path = true,
+				},
+			},
+		},
+	},
 
 	-- # Fuzzy Finding
 	{
