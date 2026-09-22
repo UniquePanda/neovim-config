@@ -340,7 +340,26 @@ lazy.setup({
 				},
 				-- roslyn_ls = {},
 				stylua = {},
-				tailwindcss = {},
+				tailwindcss = {
+					root_dir = function(bufnr, on_dir)
+						-- Tailwind v3 has its own config file
+						local root = vim.fs.root(bufnr, {
+							'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts',
+						})
+						if root then
+							return on_dir(root)
+						end
+
+						-- Tailwind v4 doesn't have its own config file, so we need to check the package.json
+						local pkg = vim.fs.find('package.json', {
+							upward = true,
+							path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+						})[1]
+						if pkg and table.concat(vim.fn.readfile(pkg), '\n'):find('"tailwindcss"', 1, true) then
+							on_dir(vim.fs.dirname(pkg))
+						end
+					end,
+				},
 			}
 
 			local ensure_installed_servers = vim.tbl_keys(servers or {})
