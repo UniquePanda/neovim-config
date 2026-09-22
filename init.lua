@@ -16,12 +16,11 @@ vim.opt.shiftwidth = 4 -- use 4 spaces for automatically indented lines
 vim.opt.expandtab = false -- don't transform tabs to spaces
 
 -- vim.opt.autoindent = true
-vim.opt.indentexpr = 'v:lua.LazyVim.treesitter.indentexpr()' -- use treesitter for indentation
 vim.g.PHP_IndentFunctionDeclarationParameters = true
 
 vim.opt.ignorecase = true -- ignore case when searching
 
-vim.opt.colorcolumn = { 120 } -- highlight 120th column
+vim.opt.colorcolumn = '120' -- highlight 120th column
 vim.opt.cursorline = true -- highlight line that the cursor is in
 vim.opt.splitbelow = true -- split below by default (instead of top)
 vim.opt.splitright = true -- split right (after below) by default (instead of left)
@@ -151,28 +150,57 @@ lazy.setup({
 		end,
 	},
 	{
+		-- Parsing/Syntax Highlighting
+		'nvim-treesitter/nvim-treesitter',
+		branch = 'main',
+		lazy = false,
+		build = ':TSUpdate',
+		config = function()
+			local ts = require('nvim-treesitter')
+
+			-- Own parser for Blade (must be registered before install())
+			vim.api.nvim_create_autocmd('User', {
+				pattern = 'TSUpdate',
+				callback = function()
+					require('nvim-treesitter.parsers').blade = {
+						install_info = {
+							url = 'https://github.com/EmranMR/tree-sitter-blade',
+							branch = 'main',
+						},
+					}
+				end,
+			})
+
+			ts.install({
+				'bash', 'blade', 'c', 'cpp', 'diff', 'gitcommit', 'html', 'java',
+				'javascript', 'json', 'lua', 'luadoc', 'markdown', 'markdown_inline',
+				'php', 'typescript', 'vim', 'vimdoc', 'vue',
+			})
+
+			-- Temporary use JS highlighting for bla files as it is similar enough
+			vim.treesitter.language.register('javascript', 'bla')
+
+			-- Highlighting + Indent for every filetype for which a parser exists
+			vim.api.nvim_create_autocmd('FileType', {
+				callback = function(args)
+					if pcall(vim.treesitter.start, args.buf) then
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
+				end,
+			})
+		end,
+	},
+	{
 		-- LSP
 		'neovim/nvim-lspconfig',
-		opts = function()
-			return {
-				diagnostics = {
-					underline = true,
-					update_in_insert = false,
-					severity_sort = false,
-				}
-			}
-		end,
 		dependencies = {
 			-- Package manager for LSPs
 			{
-				'williamboman/mason.nvim',
-				-- version = '^1.0.0', -- Version 1 until problems with version 2 are fixed (see Github of Mason)
-				config = true
+				'mason-org/mason.nvim',
 			},
 			-- Connect mason with lspconfig
 			{
-				'williamboman/mason-lspconfig.nvim',
-				-- version = '^1.0.0', -- Version 1 until problems with version 2 are fixed (see Github of Mason)
+				'mason-org/mason-lspconfig.nvim',
 			},
 			-- Easier installation/updating of mason tools
 			{
@@ -182,10 +210,6 @@ lazy.setup({
 			{
 				'j-hui/fidget.nvim'
 			},
-			-- Neovim Config LUA LSP
-			{
-				'folke/neodev.nvim'
-			}
 		},
 		config = function()
 			-- Called everytime an LSP is attached to a file (everytime a file with a recognized extension is opened)
@@ -205,8 +229,8 @@ lazy.setup({
 					keymap('<leader>dh', vim.diagnostic.open_float, 'Show diagnostics [h]int')
 					keymap('<leader>dS', '<cmd>LspStop<cr>', 'Kill (stop) LSP')
 					keymap('<leader>ds', '<cmd>LspStart<cr>', 'Start LSP')
-					keymap('<leader>dk', vim.diagnostic.goto_prev, 'Go to previous diagnostics location')
-					keymap('<leader>dj', vim.diagnostic.goto_next, 'Go to next diagnostics location')
+					keymap('<leader>dk', function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Go to previous diagnostics location')
+					keymap('<leader>dj', function() vim.diagnostic.jump({ count = 1, float = true }) end, 'Go to next diagnostics location')
 
 					-- Autocommands to highlight the word under the cursor (and clear highlight on cursor move)
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -250,7 +274,6 @@ lazy.setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-			local util = require 'lspconfig.util'
 			local mason_packages = vim.fn.stdpath('data') .. '/mason/packages'
 			local volar_path = mason_packages .. '/vue-language-server/node_modules/@vue/language-server'
 
@@ -324,10 +347,9 @@ lazy.setup({
 
 			-- Setup mason to automatically install the servers and tools
 			require('mason').setup()
-			require('mason-tool-installer').setup({ ensure_installed = {'cspell', 'jdtls', unpack(ensure_installed_servers) }})
+			require('mason-tool-installer').setup({ ensure_installed = {'cspell', 'jdtls', 'markdownlint', unpack(ensure_installed_servers) }})
 			require('mason-lspconfig').setup({
 				ensure_installed = ensure_installed_servers,
-				automatic_installation = true,
 			})
 
 			for server_name, server in pairs(servers) do
@@ -349,10 +371,7 @@ lazy.setup({
 					init_options = {
 						game_dir = '/mnt/c/Program Files (x86)/GOG Galaxy/Games/Cyberpunk 2077',
 					},
-					root_dir = function(fname)
-						return util.root_pattern('.git')(fname) or util.path.dirname(fname)
-					end,
-					single_file_support = true,
+					root_markers = { '.git' },
 				},
 			})
 			vim.lsp.enable('redscript_ide')
@@ -532,7 +551,7 @@ lazy.setup({
 	},
 	{
 		-- Fuzzy Finder
-		'nvim-telescope/telescope.nvim', branch = '0.1.x',
+		'nvim-telescope/telescope.nvim',
 		dependencies = {
 			{
 				'nvim-lua/plenary.nvim', -- some helper functions
@@ -567,7 +586,7 @@ lazy.setup({
 	-- File Browser
 	{
 		'stevearc/oil.nvim',
-		dependencies = { 'echasnovski/mini.icons' },
+		dependencies = { 'nvim-mini/mini.icons' },
 	},
 
 	-- # Additional Stuff
