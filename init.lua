@@ -529,6 +529,9 @@ lazy.setup({
 	{
 		"HakonHarnes/img-clip.nvim",
 		opts = {
+			default = {
+				drag_and_drop = { enabled = false },
+			},
 			filetypes = {
 				codecompanion = {
 					prompt_for_file_name = false,
