@@ -485,7 +485,7 @@ lazy.setup({
 					chat = {
 						adapter = {
 							name = 'copilot',
-							model = 'claude-opus-5',
+							model = 'claude-opus-5.5',
 						},
 						editor_context = {
 							['diff_to_develop'] = {
