@@ -435,6 +435,9 @@ lazy.setup({
 		event = 'InsertEnter',
 		config = function()
 			require('copilot').setup({
+				server = {
+					type = 'nodejs',
+				},
 				suggestion = {
 					auto_trigger = true,
 					keymap = {
