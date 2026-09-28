@@ -174,7 +174,7 @@ lazy.setup({
 			ts.install({
 				'bash', 'blade', 'c', 'cpp', 'diff', 'gitcommit', 'html', 'java',
 				'javascript', 'json', 'lua', 'luadoc', 'markdown', 'markdown_inline',
-				'php', 'typescript', 'vim', 'vimdoc', 'vue',
+				'php', 'typescript', 'vim', 'vimdoc', 'vue', 'yaml',
 			})
 
 			-- Temporary use JS highlighting for bla files as it is similar enough
