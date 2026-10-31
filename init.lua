@@ -465,11 +465,6 @@ lazy.setup({
 									max_results = 3000,
 								},
 							},
-							['run_command'] = {
-								opts = {
-									allowed_in_yolo_mode = true,
-								},
-							},
 						},
 					},
 				},
