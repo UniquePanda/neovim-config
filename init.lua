@@ -529,7 +529,7 @@ lazy.setup({
 							end,
 							title_generation_opts = {
 								adapter = 'copilot',
-								model = 'gpt-5.4',
+								model = 'claude-opus-5.5',
 								refresh_every_n_prompts = 2,
 								max_refreshes = 3,
 							},
