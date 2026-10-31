@@ -339,14 +339,12 @@ lazy.setup({
 				augroup END
 			]]
 			vim.lsp.config('redscript_ide', { -- Cyberpunk 2077 Redscript files
-				default_config = {
-					cmd = { '/usr/bin/redscript-ide' },
-					filetypes = { 'reds', 'script' },
-					init_options = {
-						game_dir = '/mnt/c/Program Files (x86)/GOG Galaxy/Games/Cyberpunk 2077',
-					},
-					root_markers = { '.git' },
+				cmd = { '/usr/bin/redscript-ide' },
+				filetypes = { 'reds', 'script' },
+				init_options = {
+					game_dir = '/mnt/c/Program Files (x86)/GOG Galaxy/Games/Cyberpunk 2077',
 				},
+				root_markers = { '.git' },
 			})
 			vim.lsp.enable('redscript_ide')
 		end,
