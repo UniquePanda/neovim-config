@@ -235,7 +235,7 @@ lazy.setup({
 			-- Enabled language servers
 			local servers = {
 				ansiblels = { -- ansible
-					filetypes = {'yml', 'yaml', 'ansible'},
+					filetypes = { 'yaml', 'yaml.ansible' },
 				},
 				bashls = {}, -- bash
 				clangd = {}, -- c++
