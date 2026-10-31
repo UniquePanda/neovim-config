@@ -236,6 +236,14 @@ lazy.setup({
 			local servers = {
 				ansiblels = { -- ansible
 					filetypes = { 'yaml', 'yaml.ansible' },
+					settings = {
+						ansible = {
+							-- Use the venv of Mason's ansible-lint, which also contains ansible-core (ansible-config etc.)
+							python = {
+								interpreterPath = mason_packages .. '/ansible-lint/venv/bin/python',
+							},
+						},
+					},
 				},
 				bashls = {}, -- bash
 				clangd = {}, -- c++
@@ -321,7 +329,7 @@ lazy.setup({
 
 			-- Setup mason to automatically install the servers and tools
 			require('mason').setup()
-			require('mason-tool-installer').setup({ ensure_installed = {'cspell', 'jdtls', 'markdownlint', unpack(ensure_installed_servers) }})
+			require('mason-tool-installer').setup({ ensure_installed = {'ansible-lint', 'cspell', 'jdtls', 'markdownlint', unpack(ensure_installed_servers) }})
 			require('mason-lspconfig').setup({
 				ensure_installed = ensure_installed_servers,
 			})
