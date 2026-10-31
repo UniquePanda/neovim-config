@@ -107,51 +107,6 @@ lazy.setup({
 	{
 		-- Parsing/Syntax Highlighting
 		'nvim-treesitter/nvim-treesitter',
-		build = ':TSUpdate',
-		opts = {
-			ensure_installed = {
-				-- Add all needed languages here
-				'bash',
-				'c',
-				'cpp',
-				'diff',
-				'gitcommit',
-				'html',
-				'java',
-				'javascript',
-				'json',
-				'lua',
-				'luadoc',
-				'markdown',
-				'markdown_inline',
-				'php',
-				'typescript',
-				'vim',
-				'vimdoc',
-				'vue',
-			},
-			auto_install = true,
-			highlight = { enable = true },
-			indent = { enable = true },
-		},
-		config = function(_, opts)
-			require('nvim-treesitter.install').prefer_git = true
-			require('nvim-treesitter.configs').setup(opts)
-			require('nvim-treesitter.parsers').get_parser_configs().blade = {
-				install_info = {
-					url = 'https://github.com/EmranMR/tree-sitter-blade',
-					files = {'src/parser.c'},
-					branch = 'main',
-				},
-				filetype = 'blade',
-			}
-			-- Temporary use JS highlighting for bla files as it is similar enough
-			vim.treesitter.language.register('javascript', 'bla')
-		end,
-	},
-	{
-		-- Parsing/Syntax Highlighting
-		'nvim-treesitter/nvim-treesitter',
 		branch = 'main',
 		lazy = false,
 		build = ':TSUpdate',
