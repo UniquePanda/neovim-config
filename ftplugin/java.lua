@@ -38,6 +38,11 @@ local config = {
     settings = {
         java = {
             format = { enabled = false },
+            -- Don't let jdtls's Eclipse compiler write into target/classes (Maven's output dir).
+            -- With autobuild on, jdtls leaves stale/broken .class files there that `mvn` then packages
+            -- (e.g. "Unresolved compilation problem" at runtime). Off = Maven owns target/classes alone.
+            -- Diagnostics/completion still work via the reconciler.
+            autobuild = { enabled = false },
         },
     },
     init_options = {
