@@ -54,6 +54,17 @@ return {
 						end,
 					},
 				},
+				skills = {
+					-- Defaults plus the project's `.agents/skills` (shared with other agents)
+					dirs = {
+						'~/.config/codecompanion/skills',
+						'.codecompanion/skills',
+						'~/.agents/skills',
+						'~/.claude/skills',
+						'.agents/skills',
+						'.claude/skills',
+					},
+				},
 				interactions = {
 					chat = {
 						adapter = {
