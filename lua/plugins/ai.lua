@@ -55,7 +55,8 @@ return {
 					},
 				},
 				skills = {
-					-- Defaults plus the project's `.agents/skills` (shared with other agents)
+					-- Defaults plus the project's `.agents/skills` (shared with other agents) and the skills in this config.
+					-- Later dirs win on name clashes, so this config's skills (e.g. `code-review`) override project ones.
 					dirs = {
 						'~/.config/codecompanion/skills',
 						'.codecompanion/skills',
@@ -63,6 +64,7 @@ return {
 						'~/.claude/skills',
 						'.agents/skills',
 						'.claude/skills',
+						config_dir .. '/skills',
 					},
 				},
 				interactions = {
