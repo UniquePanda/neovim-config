@@ -2,7 +2,10 @@
 -- The list is rebuilt whenever a chat is created or opened, so each project only shows its own skills.
 -- Running a command adds that skill to the chat's context, plus every skill it hands off to
 -- ("call the Skill tool with `X`"), since CodeCompanion has no Skill tool to follow those itself.
--- Relies on CodeCompanion internals: `codecompanion.skills` and the live config table.
+-- It also adds the `agent` tool group and submits right away: whatever is already written in the
+-- prompt is sent along with "Use the `X` skill.", so write the request first, then run the command.
+-- Relies on CodeCompanion internals: `codecompanion.skills`, the chat's tool registry and prompt,
+-- and the live config table.
 local M = {}
 
 ---Names of the slash commands this module registered, so a refresh can remove them again
@@ -76,7 +79,10 @@ function M.refresh()
 							{ title = 'CodeCompanion' }
 						)
 					end
+					chat.tool_registry:add_group('agent')
 					skills.add_to_chat(chat, with_handoffs(skill, skills_by_name))
+					chat.prompt:add({ content = string.format('Use the `%s` skill.', name) })
+					chat:submit()
 				end,
 				opts = {
 					contains_code = false,
