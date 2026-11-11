@@ -4,6 +4,8 @@
 -- ("call the Skill tool with `X`"), since CodeCompanion has no Skill tool to follow those itself.
 -- It also adds the `agent` tool group and submits right away: whatever is already written in the
 -- prompt is sent along with "Use the `X` skill.", so write the request first, then run the command.
+-- The message names the current branch, and a new chat is titled "<skill> · <branch>", so chats
+-- are easy to tell apart in the history.
 -- Relies on CodeCompanion internals: `codecompanion.skills`, the chat's tool registry and prompt,
 -- and the live config table.
 local M = {}
@@ -81,7 +83,16 @@ function M.refresh()
 					end
 					chat.tool_registry:add_group('agent')
 					skills.add_to_chat(chat, with_handoffs(skill, skills_by_name))
-					chat.prompt:add({ content = string.format('Use the `%s` skill.', name) })
+					local message = string.format('Use the `%s` skill.', name)
+					local branch = require('code-companion.git').current_branch()
+					if branch then
+						message = string.format('%s Current branch: `%s`.', message, branch)
+					end
+					chat.prompt:add({ content = message })
+
+					if not chat.opts.title then
+						chat.opts.title = require('code-companion.git').title_with_branch(name)
+					end
 					chat:submit()
 				end,
 				opts = {

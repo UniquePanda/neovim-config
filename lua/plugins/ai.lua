@@ -110,6 +110,13 @@ return {
 								model = 'claude-opus-5.5',
 								refresh_every_n_prompts = 2,
 								max_refreshes = 3,
+								format_title = function(title)
+									-- The extension recognises its placeholders only by their exact text
+									if title == 'Deciding title...' or title == 'Refreshing title...' then
+										return title
+									end
+									return require('code-companion.git').title_with_branch(title)
+								end,
 							},
 							keymap = '<leader>chb',
 							summary = {
