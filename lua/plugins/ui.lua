@@ -2,7 +2,11 @@
 -- The actual theme + statusline setup happens in lua/config/theme.lua
 return {
 	{
-		-- GUI Theme
+		-- GUI Theme (dark)
+		'Mofiqul/dracula.nvim',
+	},
+	{
+		-- GUI Theme (light variant)
 		'folke/tokyonight.nvim',
 	},
 	{

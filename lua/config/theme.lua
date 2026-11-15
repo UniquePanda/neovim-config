@@ -1,10 +1,10 @@
--- # THEMING (tokyonight + lualine, with dark and light variant)
+-- # THEMING (dark: dracula, light: tokyonight day; + lualine)
 local M = {}
 
-local function init_lualine()
+local function init_lualine(theme)
 	require('lualine').setup({
 		options = {
-			theme = 'tokyonight',
+			theme = theme or 'tokyonight',
 			component_separators = { left = '|', right = '|' },
 		},
 		sections = {
@@ -34,27 +34,20 @@ local function init_lualine()
 end
 
 function M.dark()
-	local util = require('tokyonight.util')
 	vim.opt.background = 'dark'
 
-	require('tokyonight').setup({
-		style = 'moon',
-
-		on_colors = function(colors)
-			colors.fg_gutter = util.lighten(colors.fg_gutter, 0.7)
-		end,
-
-		on_highlights = function(highlights, colors)
-			highlights.Whitespace = { fg = util.lighten(colors.bg, 0.85) }
-			highlights.CopilotSuggestion = { fg = util.lighten(colors.purple, 0.4) }
+	require('dracula').setup({
+		overrides = function(colors)
+			return {
+				Whitespace = { fg = colors.selection },
+				CopilotSuggestion = { fg = colors.comment, italic = true },
+				ColorColumn = { bg = colors.menu },
+			}
 		end,
 	})
-	vim.cmd.colorscheme('tokyonight')
+	vim.cmd.colorscheme('dracula')
 
-	init_lualine()
-
-	local colors = require('tokyonight.colors').setup()
-	vim.cmd('highlight ColorColumn ctermbg=0 guibg=' .. util.darken(colors.comment, 0.3))
+	init_lualine('dracula-nvim')
 end
 
 function M.light()
