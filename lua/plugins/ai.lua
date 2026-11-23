@@ -133,6 +133,7 @@ return {
 
 			require('code-companion.skill_slash_commands').setup()
 			require('code-companion.history_fixes').setup()
+			require('code-companion.sticky_chat_window').setup()
 
 			vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'Open Code Companion Chat' })
 			vim.keymap.set('n', '<leader>ct', '<cmd>CodeCompanionChat Toggle<cr>', { desc = 'Toggle last Code Companion Chat' })
