@@ -83,6 +83,9 @@ return {
 							},
 						},
 						tools = {
+							opts = {
+								approval_mode = 'auto',
+							},
 							['file_search'] = {
 								opts = {
 									max_results = 3000,
