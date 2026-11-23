@@ -135,6 +135,7 @@ return {
 			require('code-companion.history_fixes').setup()
 
 			vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'Open Code Companion Chat' })
+			vim.keymap.set('n', '<leader>ct', '<cmd>CodeCompanionChat Toggle<cr>', { desc = 'Toggle last Code Companion Chat' })
 		end,
 	},
 	{
