@@ -129,6 +129,7 @@ return {
 			})
 
 			require('code-companion.skill_slash_commands').setup()
+			require('code-companion.history_fixes').setup()
 
 			vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'Open Code Companion Chat' })
 		end,
