@@ -137,6 +137,17 @@ return {
 
 			vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'Open Code Companion Chat' })
 			vim.keymap.set('n', '<leader>ct', '<cmd>CodeCompanionChat Toggle<cr>', { desc = 'Toggle last Code Companion Chat' })
+
+			-- Cycle chats from anywhere (inside a chat buffer, `}` / `{` do the same)
+			local function cycle_chat(action)
+				local chat = require('codecompanion').buf_get_chat(0) or require('codecompanion').last_chat()
+				if not chat then
+					return vim.notify('No CodeCompanion chat open', vim.log.levels.INFO)
+				end
+				require('codecompanion.interactions.chat.keymaps')[action].callback(chat)
+			end
+			vim.keymap.set('n', '<leader>cn', function() cycle_chat('next_chat') end, { desc = 'Next Code Companion Chat' })
+			vim.keymap.set('n', '<leader>cN', function() cycle_chat('previous_chat') end, { desc = 'Previous Code Companion Chat' })
 		end,
 	},
 	{
